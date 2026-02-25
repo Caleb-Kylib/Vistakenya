@@ -3,6 +3,7 @@ import { Building, Users, Home, CreditCard, PlusCircle } from 'lucide-react';
 import StatCard from '../../components/StatCard';
 import Table from '../../components/Table';
 import { Link } from 'react-router-dom';
+import TenantTrustCard from '../../components/tenant/TenantTrustCard';
 
 const LandlordDashboard = () => {
     // Mock data for landlord
@@ -13,8 +14,30 @@ const LandlordDashboard = () => {
     ];
 
     const applications = [
-        { id: 201, tenant: 'Alice Wanjiku', property: 'Sunset Apartments', status: 'Pending', verification: 'Verified' },
-        { id: 202, tenant: 'John Doe', property: 'Lake View Residency', status: 'Pending', verification: 'Unverified' },
+        {
+            id: 201,
+            tenant: 'Alice Wanjiku',
+            property: 'Sunset Apartments',
+            status: 'Pending',
+            verification_status: 'verified',
+            rental_score: 92,
+            payment_reliability: 100,
+            completed_leases_count: 3,
+            completion_percent: 100,
+            joined_date: 'Mar 2023'
+        },
+        {
+            id: 202,
+            tenant: 'John Doe',
+            property: 'Lake View Residency',
+            status: 'Pending',
+            verification_status: 'pending',
+            rental_score: 65,
+            payment_reliability: 85,
+            completed_leases_count: 1,
+            completion_percent: 60,
+            joined_date: 'Nov 2024'
+        },
     ];
 
     const propertyColumns = [
@@ -25,59 +48,52 @@ const LandlordDashboard = () => {
         { header: 'Monthly Revenue', accessor: 'revenue' },
     ];
 
-    const applicationColumns = [
-        { header: 'Applicant', accessor: 'tenant' },
-        { header: 'Target Property', accessor: 'property' },
-        {
-            header: 'ID Verification',
-            render: (row) => (
-                <span className={`badge ${row.verification === 'Verified' ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800'}`}>
-                    {row.verification}
-                </span>
-            )
-        },
-        {
-            header: 'Action',
-            render: () => (
-                <div className="flex space-x-2">
-                    <button className="text-xs font-semibold text-primary-600 hover:text-primary-800">Review</button>
-                    <button className="text-xs font-semibold text-green-600 hover:text-green-800">Accept</button>
-                    <button className="text-xs font-semibold text-red-600 hover:text-red-800">Reject</button>
-                </div>
-            )
-        },
-    ];
-
     return (
-        <div className="space-y-6">
-            <div className="flex items-center justify-between">
-                <h1 className="text-2xl font-bold text-gray-900">Landlord Dashboard</h1>
-                <Link to="/landlord/add-property" className="btn btn-primary">
-                    <PlusCircle className="w-4 h-4 mr-2" />
+        <div className="max-w-7xl mx-auto space-y-8 pb-10">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h1 className="text-3xl font-black text-gray-900 tracking-tight">Landlord Dashboard</h1>
+                    <p className="text-gray-500 mt-1">Manage your properties and review tenant applications.</p>
+                </div>
+                <Link to="/landlord/add-property" className="flex items-center gap-2 px-5 py-2.5 bg-teal-600 text-white rounded-xl font-bold hover:bg-teal-700 transition-all shadow-sm">
+                    <PlusCircle className="w-5 h-5" />
                     Add New Property
                 </Link>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                <StatCard title="Total Properties" value="3" icon={Building} color="blue" />
-                <StatCard title="Total Leases" value="14" icon={Home} color="purple" />
+                <StatCard title="Total Properties" value="3" icon={Building} color="teal" />
+                <StatCard title="Total Leases" value="14" icon={Home} color="teal" />
                 <StatCard title="Total Tenants" value="14" icon={Users} color="orange" />
                 <StatCard title="Monthly Revenue" value="KES 1.1M" icon={CreditCard} color="green" />
             </div>
 
             <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                    <h2 className="text-lg font-semibold text-gray-900">My Properties</h2>
-                    <Link to="/landlord/properties" className="text-sm font-medium text-primary-600 hover:underline">View All</Link>
+                    <h2 className="text-xl font-bold text-gray-900">My Properties</h2>
+                    <Link to="/landlord/properties" className="text-sm font-bold text-teal-600 hover:underline">View All</Link>
                 </div>
-                <Table columns={propertyColumns} data={properties} />
+                <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
+                    <Table columns={propertyColumns} data={properties} />
+                </div>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-6">
                 <div className="flex items-center justify-between">
-                    <h2 className="text-lg font-semibold text-gray-900">Pending Applications</h2>
+                    <h2 className="text-xl font-bold text-gray-900">Pending Applications</h2>
+                    <span className="bg-orange-100 text-orange-700 text-xs font-bold px-2 py-1 rounded-lg">2 New</span>
                 </div>
-                <Table columns={applicationColumns} data={applications} />
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                    {applications.map(app => (
+                        <div key={app.id} className="space-y-2">
+                            <div className="flex items-center justify-between px-1">
+                                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Applying for {app.property}</span>
+                                <span className="text-[10px] font-bold text-teal-600 bg-teal-50 px-2 py-0.5 rounded-full ring-1 ring-teal-100">Live Identity</span>
+                            </div>
+                            <TenantTrustCard tenant={app} variant="compact" />
+                        </div>
+                    ))}
+                </div>
             </div>
         </div>
     );

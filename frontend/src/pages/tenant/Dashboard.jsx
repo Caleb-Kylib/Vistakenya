@@ -2,7 +2,7 @@ import React from 'react';
 import { Search, Home, ClipboardList, CreditCard, ShieldCheck } from 'lucide-react';
 import StatCard from '../../components/StatCard';
 import Table from '../../components/Table';
-import TenantTrustCard from '../../components/TenantTrustCard';
+import TenantTrustCard from '../../components/tenant/TenantTrustCard';
 
 const TenantDashboard = () => {
     // Mock data for the dashboard
