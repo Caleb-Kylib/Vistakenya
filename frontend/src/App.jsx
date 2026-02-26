@@ -18,6 +18,9 @@ import TenantDashboard from './pages/tenant/Dashboard';
 import TenantLeases from './pages/tenant/Leases';
 import LeaseDetail from './pages/tenant/LeaseDetail';
 import TenantVerification from './pages/tenant/Verification';
+import BrowseProperties from './pages/tenant/BrowseProperties';
+import TenantApplications from './pages/tenant/Applications';
+import TenantPayments from './pages/tenant/Payments';
 // Placeholder for other pages
 const Placeholder = ({ title }) => (
   <div className="card p-8 text-center">
@@ -52,11 +55,11 @@ function App() {
           {/* Tenant Routes */}
           <Route element={<DashboardLayout />}>
             <Route path="/tenant/dashboard" element={<TenantDashboard />} />
-            <Route path="/tenant/browse" element={<Placeholder title="Browse Properties" />} />
-            <Route path="/tenant/applications" element={<Placeholder title="My Applications" />} />
+            <Route path="/tenant/browse" element={<BrowseProperties />} />
+            <Route path="/tenant/applications" element={<TenantApplications />} />
             <Route path="/tenant/leases" element={<TenantLeases />} />
             <Route path="/tenant/leases/:id" element={<LeaseDetail />} />
-            <Route path="/tenant/payments" element={<Placeholder title="Payment History" />} />
+            <Route path="/tenant/payments" element={<TenantPayments />} />
             <Route path="/tenant/verification" element={<TenantVerification />} />
           </Route>
 
