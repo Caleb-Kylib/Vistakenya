@@ -9,23 +9,18 @@ const Login = () => {
     const { login } = useAuth();
     const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Simple mock logic: if email contains admin, landlord or tenant
-        let role = 'tenant';
-        if (email.includes('admin')) role = 'admin';
-        else if (email.includes('landlord')) role = 'landlord';
+        const result = await login(email, password);
 
-        login({
-            id: 1,
-            name: email.split('@')[0].charAt(0).toUpperCase() + email.split('@')[0].slice(1),
-            email,
-            role
-        });
-
-        if (role === 'admin') navigate('/admin/dashboard');
-        else if (role === 'landlord') navigate('/landlord/dashboard');
-        else navigate('/tenant/dashboard');
+        if (result.success) {
+            const role = result.user.role;
+            if (role === 'admin') navigate('/admin/dashboard');
+            else if (role === 'landlord') navigate('/landlord/dashboard');
+            else navigate('/tenant/dashboard');
+        } else {
+            alert(result.message || 'Login failed');
+        }
     };
 
     return (

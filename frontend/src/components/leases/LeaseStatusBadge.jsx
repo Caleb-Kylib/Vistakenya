@@ -3,8 +3,8 @@ import React from 'react';
 const LeaseStatusBadge = ({ status }) => {
     const styles = {
         'Active': 'bg-teal-50 text-teal-700 ring-teal-100',
-        'Draft': 'bg-orange-50 text-orange-700 ring-orange-100',
-        'Pending': 'bg-blue-50 text-blue-700 ring-blue-100',
+        'Draft': 'bg-gray-50 text-gray-700 ring-gray-100',
+        'Pending': 'bg-orange-50 text-orange-700 ring-orange-100',
         'Expired': 'bg-gray-50 text-gray-700 ring-gray-100',
         'Terminated': 'bg-red-50 text-red-700 ring-red-100',
     };

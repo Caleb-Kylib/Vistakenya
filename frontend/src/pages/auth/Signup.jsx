@@ -18,16 +18,17 @@ const Signup = () => {
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        signup({
-            id: Date.now(),
-            ...formData
-        });
+        const result = await signup(formData);
 
-        if (formData.role === 'admin') navigate('/admin/dashboard');
-        else if (formData.role === 'landlord') navigate('/landlord/dashboard');
-        else navigate('/tenant/dashboard');
+        if (result.success) {
+            if (formData.role === 'admin') navigate('/admin/dashboard');
+            else if (formData.role === 'landlord') navigate('/landlord/dashboard');
+            else navigate('/tenant/dashboard');
+        } else {
+            alert(result.message || 'Signup failed');
+        }
     };
 
     return (

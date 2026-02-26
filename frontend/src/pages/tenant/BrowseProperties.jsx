@@ -61,7 +61,7 @@ const BrowseProperties = () => {
                         <ShieldCheck className="w-4 h-4" />
                         Verified Network Inventory
                     </div>
-                    <h1 className="text-5xl font-black text-gray-900 tracking-tight uppercase tracking-tighter">Explore Digital Assets</h1>
+                    <h1 className="text-5xl font-black text-gray-900 tracking-tight uppercase tracking-tighter">Listed Properties</h1>
                     <p className="text-gray-400 font-medium text-lg max-w-xl leading-relaxed">
                         Every listing in our network is audited for quality and security. Find your next high-performance home today.
                     </p>

@@ -24,8 +24,8 @@ const Sidebar = ({ isOpen }) => {
     if (!user) return null;
 
     const tenantMenu = [
-        { name: 'Identity Hub', path: '/tenant/dashboard', icon: LayoutDashboard },
-        { name: 'Asset Market', path: '/tenant/browse', icon: Compass },
+        { name: 'Dashboard', path: '/tenant/dashboard', icon: LayoutDashboard },
+        { name: 'Listed Properties', path: '/tenant/browse', icon: Compass },
         { name: 'Active Requests', path: '/tenant/applications', icon: ClipboardList },
         { name: 'Digital Leases', path: '/tenant/leases', icon: Building },
         { name: 'Wallet System', path: '/tenant/payments', icon: CreditCard },
@@ -41,9 +41,9 @@ const Sidebar = ({ isOpen }) => {
     ];
 
     const adminMenu = [
-        { name: 'System Root', path: '/admin/dashboard', icon: LayoutDashboard },
-        { name: 'Supply Chain', path: '/admin/properties', icon: Building },
-        { name: 'Stakeholders', path: '/admin/landlords', icon: Users },
+        { name: 'Dashboard', path: '/admin/dashboard', icon: LayoutDashboard },
+        { name: 'Listed Properties', path: '/admin/properties', icon: Building },
+        { name: 'Landlords', path: '/admin/landlords', icon: Users },
         { name: 'Identity Verifications', path: '/admin/tenants', icon: ShieldCheck },
         { name: 'Network Analytics', path: '/admin/stats', icon: BarChart3 },
     ];

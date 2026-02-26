@@ -47,7 +47,7 @@ const TenantDashboard = () => {
             {/* Header Section */}
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
                 <div>
-                    <h1 className="text-3xl font-black text-gray-900 tracking-tight">Rental Identity</h1>
+                    <h1 className="text-3xl font-black text-gray-900 tracking-tight">Dashboard</h1>
                     <p className="text-gray-500 mt-1">Manage your credibility and active rental portfolio.</p>
                 </div>
                 <div className="flex items-center gap-2 text-sm text-gray-400 font-medium bg-gray-50 px-3 py-1.5 rounded-lg border border-gray-100">

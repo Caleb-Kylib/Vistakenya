@@ -3,13 +3,57 @@ import { Users, Building, ShieldCheck, BarChart3, Clock, ArrowRight, UserCheck, 
 import StatCard from '../../components/StatCard';
 import { Link } from 'react-router-dom';
 
+import { API_BASE_URL } from '../../config';
+
 const AdminDashboard = () => {
-    // Mock data for admin dashboard summary
+    const [systemStats, setSystemStats] = React.useState(null);
+    const [loading, setLoading] = React.useState(true);
+
+    React.useEffect(() => {
+        const fetchStats = async () => {
+            try {
+                const response = await fetch(`${API_BASE_URL}/admin/stats`);
+                const data = await response.json();
+                setSystemStats(data);
+            } catch (error) {
+                console.error('Error fetching admin stats:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchStats();
+    }, []);
+
+    // Summary data mapped from real backend stats
     const stats = [
-        { title: "Total Users", value: "1,240", icon: Users, color: "teal", link: "/admin/landlords" },
-        { title: "Active Listings", value: "450", icon: Building, color: "teal", link: "/admin/properties" },
-        { title: "Trust Pass Holders", value: "890", icon: ShieldCheck, color: "orange", link: "/admin/tenants" },
-        { title: "Platform Revenue", value: "KES 4.2M", icon: Activity, color: "green", link: "/admin/stats" },
+        {
+            title: "Total Users",
+            value: systemStats ? systemStats.totalUsers.toLocaleString() : "...",
+            icon: Users,
+            color: "teal",
+            link: "/admin/landlords"
+        },
+        {
+            title: "Active Listings",
+            value: systemStats ? systemStats.activeListings.toLocaleString() : "...",
+            icon: Building,
+            color: "teal",
+            link: "/admin/properties"
+        },
+        {
+            title: "Pending Reviews",
+            value: systemStats ? systemStats.pendingApprovals.toLocaleString() : "0",
+            icon: Clock,
+            color: "orange",
+            link: "/admin/properties"
+        },
+        {
+            title: "Platform Revenue",
+            value: systemStats ? systemStats.revenue : "...",
+            icon: Activity,
+            color: "green",
+            link: "/admin/stats"
+        },
     ];
 
     const alerts = [
@@ -23,7 +67,7 @@ const AdminDashboard = () => {
             {/* Header */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
                 <div>
-                    <h1 className="text-4xl font-black text-gray-900 tracking-tight uppercase tracking-tight">System Control Tower</h1>
+                    <h1 className="text-4xl font-black text-gray-900 tracking-tight uppercase tracking-tight">Dashboard</h1>
                     <p className="text-gray-500 mt-2 font-medium flex items-center gap-2">
                         <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
                         Network systems nominal. Last sync: Feb 26, 2026 15:05:22
