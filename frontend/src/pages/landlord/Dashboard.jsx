@@ -1,13 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Building, Users, Home, CreditCard, PlusCircle, MapPin } from 'lucide-react';
 import StatCard from '../../components/StatCard';
-import Table from '../../components/Table';
 import { Link } from 'react-router-dom';
 import TenantTrustCard from '../../components/tenant/TenantTrustCard';
 
 const LandlordDashboard = () => {
     // Mock data for landlord
-    const properties = [
+    const [properties, setProperties] = useState([
         {
             id: 1,
             name: 'Sunset Apartments',
@@ -38,9 +37,9 @@ const LandlordDashboard = () => {
             image: 'https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&w=400&q=80',
             status: 'Pending'
         },
-    ];
+    ]);
 
-    const applications = [
+    const [applications, setApplications] = useState([
         {
             id: 201,
             tenant: 'Alice Wanjiku',
@@ -65,15 +64,22 @@ const LandlordDashboard = () => {
             completion_percent: 60,
             joined_date: 'Nov 2024'
         },
+    ]);
+
+    const recentLeases = [
+        { id: "LSE-2024-001", tenant: "Alice Wanjiku", property: "Sunset Apartments", rent: "45,000", status: "Active" },
+        { id: "LSE-2024-005", tenant: "John Doe", property: "Lake View Residency", rent: "24,000", status: "Pending" },
     ];
 
-    const propertyColumns = [
-        { header: 'Property Name', accessor: 'name' },
-        { header: 'Location', accessor: 'location' },
-        { header: 'Total Units', accessor: 'units' },
-        { header: 'Occupancy', accessor: 'occupancy' },
-        { header: 'Monthly Revenue', accessor: 'revenue' },
-    ];
+    const handleAccept = (app) => {
+        setApplications(prev => prev.filter(item => item.id !== app.id));
+        alert(`Application for ${app.tenant} accepted! Initializing digital lease...`);
+    };
+
+    const handleDecline = (app) => {
+        setApplications(prev => prev.filter(item => item.id !== app.id));
+        alert(`Application for ${app.tenant} declined.`);
+    };
 
     return (
         <div className="max-w-7xl mx-auto space-y-10 pb-20">
@@ -81,7 +87,9 @@ const LandlordDashboard = () => {
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
                 <div>
                     <h1 className="text-4xl font-black text-gray-900 tracking-tight">Portfolio Overview</h1>
-                    <p className="text-gray-500 mt-2 font-medium">You have <span className="text-teal-600">3 properties</span> and <span className="text-orange-600">2 pending applications</span>.</p>
+                    <p className="text-gray-500 mt-2 font-medium">
+                        You have <span className="text-teal-600">{properties.length} properties</span> and <span className="text-orange-600">{applications.length} pending applications</span>.
+                    </p>
                 </div>
                 <div className="flex items-center gap-3">
                     <Link to="/landlord/add-property" className="flex items-center gap-2 px-6 py-3.5 bg-teal-600 text-white rounded-2xl font-black hover:bg-teal-700 transition-all shadow-xl shadow-teal-100 hover:-translate-y-1 group">
@@ -93,7 +101,7 @@ const LandlordDashboard = () => {
 
             {/* Performance Stats */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <StatCard title="Total Properties" value="3" icon={Building} color="teal" />
+                <StatCard title="Total Properties" value={properties.length.toString()} icon={Building} color="teal" />
                 <StatCard title="Total Leases" value="14" icon={Home} color="teal" trend="up" trendValue="8" />
                 <StatCard title="Active Tenants" value="14" icon={Users} color="orange" />
                 <StatCard title="Gross Revenue" value="KES 1.1M" icon={CreditCard} color="green" trend="up" trendValue="12" />
@@ -108,11 +116,11 @@ const LandlordDashboard = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {properties.map(property => (
-                        <div key={property.id} className="group bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-xl transition-all duration-500 hover:-translate-y-1">
+                        <Link to={`/landlord/properties`} key={property.id} className="group bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-xl transition-all duration-500 hover:-translate-y-1">
                             <div className="relative h-48 overflow-hidden">
                                 <img src={property.image} alt={property.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                                 <div className="absolute top-4 right-4">
-                                    <span className={`px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest shadow-sm ${property.status === 'Verified' ? 'bg-white/90 text-teal-600 backdrop-blur-md' : 'bg-white/90 text-orange-600 backdrop-blur-md'
+                                    <span className={`px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest shadow-sm border ${property.status === 'Verified' ? 'bg-white/90 text-teal-600 border-teal-100 backdrop-blur-md' : 'bg-white/90 text-orange-600 border-orange-100 backdrop-blur-md'
                                         }`}>
                                         {property.status}
                                     </span>
@@ -121,9 +129,9 @@ const LandlordDashboard = () => {
                             <div className="p-6">
                                 <div className="flex items-start justify-between mb-2">
                                     <div>
-                                        <h3 className="text-xl font-bold text-gray-900">{property.name}</h3>
-                                        <p className="text-gray-500 text-sm flex items-center gap-1 mt-1">
-                                            <MapPin className="w-3 h-3" />
+                                        <h3 className="text-xl font-bold text-gray-900 group-hover:text-teal-600 transition-colors uppercase tracking-tight">{property.name}</h3>
+                                        <p className="text-gray-500 text-sm flex items-center gap-1 mt-1 font-bold">
+                                            <MapPin className="w-3 h-3 text-teal-500" />
                                             {property.location}
                                         </p>
                                     </div>
@@ -149,7 +157,7 @@ const LandlordDashboard = () => {
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </Link>
                     ))}
                 </div>
             </div>
@@ -159,25 +167,84 @@ const LandlordDashboard = () => {
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
                         <h2 className="text-2xl font-black text-gray-900 tracking-tight">Pending Applications</h2>
-                        <span className="bg-orange-600 text-white text-[10px] font-black px-2.5 py-1 rounded-full animate-pulse shadow-lg shadow-orange-100 uppercase tracking-widest">Action Required</span>
+                        <span className="bg-orange-600 text-white text-[10px] font-black px-2.5 py-1 rounded-full animate-pulse shadow-lg shadow-orange-100 uppercase tracking-widest">
+                            {applications.length} Action Required
+                        </span>
                     </div>
+                    <Link to="/landlord/applications" className="text-sm font-bold text-teal-600 hover:text-teal-700 underline-offset-4 hover:underline">View All Applications</Link>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-8">
-                    {applications.map(app => (
-                        <div key={app.id} className="space-y-3">
-                            <div className="flex items-center justify-between px-2">
-                                <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest flex items-center gap-1.5">
-                                    <Building className="w-3 h-3" />
-                                    Applying for {app.property}
-                                </span>
-                                <span className="text-[10px] font-black text-teal-600 bg-teal-50 px-2 py-0.5 rounded-full ring-1 ring-teal-100 uppercase">Trust Pass Verified</span>
+                {applications.length > 0 ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-8">
+                        {applications.map(app => (
+                            <div key={app.id} className="space-y-3">
+                                <div className="flex items-center justify-between px-2">
+                                    <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest flex items-center gap-1.5">
+                                        <Building className="w-3 h-3" />
+                                        Applying for {app.property}
+                                    </span>
+                                    <span className={`text-[10px] font-black px-2 py-0.5 rounded-full ring-1 uppercase ${app.verification_status === 'verified' ? 'text-teal-600 bg-teal-50 ring-teal-100' : 'text-orange-600 bg-orange-50 ring-orange-100'
+                                        }`}>
+                                        {app.verification_status === 'verified' ? 'Trust Pass Verified' : 'Standard Identity'}
+                                    </span>
+                                </div>
+                                <div className="animate-fadeInUp" style={{ animationDelay: `${app.id * 100}ms` }}>
+                                    <TenantTrustCard
+                                        tenant={app}
+                                        variant="compact"
+                                        onAccept={() => handleAccept(app)}
+                                        onReject={() => handleDecline(app)}
+                                    />
+                                </div>
                             </div>
-                            <div className="animate-fadeInUp" style={{ animationDelay: `${app.id * 100}ms` }}>
-                                <TenantTrustCard tenant={app} variant="compact" />
-                            </div>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
+                ) : (
+                    <div className="py-12 bg-white rounded-3xl border border-dashed border-gray-200 text-center">
+                        <Users className="w-12 h-12 text-gray-300 mx-auto mb-3" />
+                        <p className="text-gray-500 font-bold">No pending applications at the moment.</p>
+                        <Link to="/landlord/applications" className="text-teal-600 text-sm font-bold mt-2 block">Check History</Link>
+                    </div>
+                )}
+            </div>
+
+            {/* Recent Leases Section */}
+            <div className="space-y-6">
+                <div className="flex items-center justify-between">
+                    <h2 className="text-2xl font-black text-gray-900 tracking-tight">Recent Leases</h2>
+                    <Link to="/landlord/leases" className="text-sm font-bold text-teal-600 hover:text-teal-700 underline-offset-4 hover:underline">View All Leases</Link>
+                </div>
+
+                <div className="bg-white rounded-[2rem] border border-gray-100 shadow-xl shadow-gray-200/40 overflow-hidden">
+                    <div className="overflow-x-auto">
+                        <table className="w-full text-left">
+                            <thead className="bg-gray-50/50 border-b border-gray-100">
+                                <tr>
+                                    <th className="px-8 py-5 text-[10px] font-black uppercase tracking-widest text-gray-400">Lease ID</th>
+                                    <th className="px-8 py-5 text-[10px] font-black uppercase tracking-widest text-gray-400">Tenant</th>
+                                    <th className="px-8 py-5 text-[10px] font-black uppercase tracking-widest text-gray-400">Property</th>
+                                    <th className="px-8 py-5 text-[10px] font-black uppercase tracking-widest text-gray-400">Monthly Rent</th>
+                                    <th className="px-8 py-5 text-[10px] font-black uppercase tracking-widest text-gray-400">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody className="divide-y divide-gray-50">
+                                {recentLeases.map((lease) => (
+                                    <tr key={lease.id} className="group hover:bg-teal-50/30 transition-colors cursor-pointer" onClick={() => window.location.href = `/landlord/leases`}>
+                                        <td className="px-8 py-6 font-black text-teal-600 text-xs">{lease.id}</td>
+                                        <td className="px-8 py-6 font-bold text-gray-900">{lease.tenant}</td>
+                                        <td className="px-8 py-6 text-gray-500 font-medium">{lease.property}</td>
+                                        <td className="px-8 py-6 font-black text-gray-900">KES {lease.rent}</td>
+                                        <td className="px-8 py-6">
+                                            <span className={`px-2 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest ${lease.status === 'Active' ? 'bg-teal-50 text-teal-700' : 'bg-orange-50 text-orange-700'
+                                                }`}>
+                                                {lease.status}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

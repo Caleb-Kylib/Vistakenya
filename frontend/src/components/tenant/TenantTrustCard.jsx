@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import RentalScoreBadge from './RentalScoreBadge';
 import ProfileCompletionBar from './ProfileCompletionBar';
 
-const TenantTrustCard = ({ tenant, variant = 'full' }) => {
+const TenantTrustCard = ({ tenant, variant = 'full', onAccept, onReject, showActions = true }) => {
     // Mock logic if data is missing
     const data = {
         name: tenant?.name || tenant?.tenant || "Unknown Tenant",
@@ -76,10 +76,22 @@ const TenantTrustCard = ({ tenant, variant = 'full' }) => {
 
                 <div className="mt-4 pt-4 border-t border-gray-50 flex items-center justify-between">
                     <button className="text-[11px] font-bold text-primary-600 hover:text-primary-700">View Full Profile</button>
-                    <div className="flex gap-2">
-                        <button className="px-3 py-1 bg-teal-600 text-white text-[10px] font-bold rounded-lg hover:bg-teal-700 transition-colors">Accept</button>
-                        <button className="px-3 py-1 bg-white text-coral-600 border border-coral-200 text-[10px] font-bold rounded-lg hover:bg-coral-50 transition-colors">Reject</button>
-                    </div>
+                    {showActions && (
+                        <div className="flex gap-2">
+                            <button
+                                onClick={() => onAccept && onAccept(tenant)}
+                                className="px-3 py-1 bg-teal-600 text-white text-[10px] font-bold rounded-lg hover:bg-teal-700 transition-colors"
+                            >
+                                Accept
+                            </button>
+                            <button
+                                onClick={() => onReject && onReject(tenant)}
+                                className="px-3 py-1 bg-white text-coral-600 border border-coral-200 text-[10px] font-bold rounded-lg hover:bg-coral-50 transition-colors"
+                            >
+                                Reject
+                            </button>
+                        </div>
+                    )}
                 </div>
             </div>
         );

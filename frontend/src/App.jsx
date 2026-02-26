@@ -33,6 +33,8 @@ const Placeholder = ({ title }) => (
 import LandlordDashboard from './pages/landlord/Dashboard';
 import AddProperty from './pages/landlord/AddProperty';
 import LandlordLeases from './pages/landlord/Leases';
+import LandlordProperties from './pages/landlord/Properties';
+import LandlordApplications from './pages/landlord/Applications';
 
 // Admin Pages
 import AdminDashboard from './pages/admin/Dashboard';
@@ -66,9 +68,9 @@ function App() {
           {/* Landlord Routes */}
           <Route element={<DashboardLayout />}>
             <Route path="/landlord/dashboard" element={<LandlordDashboard />} />
-            <Route path="/landlord/properties" element={<Placeholder title="My Properties" />} />
+            <Route path="/landlord/properties" element={<LandlordProperties />} />
             <Route path="/landlord/add-property" element={<AddProperty />} />
-            <Route path="/landlord/applications" element={<Placeholder title="Rental Applications" />} />
+            <Route path="/landlord/applications" element={<LandlordApplications />} />
             <Route path="/landlord/leases" element={<LandlordLeases />} />
           </Route>
 
