@@ -14,8 +14,10 @@ import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
 import HowItWorksPage from './pages/HowItWorksPage';
 
-// Tenant Pages
 import TenantDashboard from './pages/tenant/Dashboard';
+import TenantLeases from './pages/tenant/Leases';
+import LeaseDetail from './pages/tenant/LeaseDetail';
+import TenantVerification from './pages/tenant/Verification';
 // Placeholder for other pages
 const Placeholder = ({ title }) => (
   <div className="card p-8 text-center">
@@ -27,6 +29,7 @@ const Placeholder = ({ title }) => (
 // Landlord Pages
 import LandlordDashboard from './pages/landlord/Dashboard';
 import AddProperty from './pages/landlord/AddProperty';
+import LandlordLeases from './pages/landlord/Leases';
 
 // Admin Pages
 import AdminDashboard from './pages/admin/Dashboard';
@@ -51,9 +54,10 @@ function App() {
             <Route path="/tenant/dashboard" element={<TenantDashboard />} />
             <Route path="/tenant/browse" element={<Placeholder title="Browse Properties" />} />
             <Route path="/tenant/applications" element={<Placeholder title="My Applications" />} />
-            <Route path="/tenant/leases" element={<Placeholder title="Active Leases" />} />
+            <Route path="/tenant/leases" element={<TenantLeases />} />
+            <Route path="/tenant/leases/:id" element={<LeaseDetail />} />
             <Route path="/tenant/payments" element={<Placeholder title="Payment History" />} />
-            <Route path="/tenant/verification" element={<Placeholder title="Tenant Verification" />} />
+            <Route path="/tenant/verification" element={<TenantVerification />} />
           </Route>
 
           {/* Landlord Routes */}
@@ -62,7 +66,7 @@ function App() {
             <Route path="/landlord/properties" element={<Placeholder title="My Properties" />} />
             <Route path="/landlord/add-property" element={<AddProperty />} />
             <Route path="/landlord/applications" element={<Placeholder title="Rental Applications" />} />
-            <Route path="/landlord/leases" element={<Placeholder title="Lease Management" />} />
+            <Route path="/landlord/leases" element={<LandlordLeases />} />
           </Route>
 
           {/* Admin Routes */}

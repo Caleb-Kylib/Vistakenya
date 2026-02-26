@@ -3,8 +3,10 @@ import { Search, Home, ClipboardList, CreditCard, ShieldCheck } from 'lucide-rea
 import StatCard from '../../components/StatCard';
 import Table from '../../components/Table';
 import TenantTrustCard from '../../components/tenant/TenantTrustCard';
+import { useAuth } from '../../context/AuthContext';
 
 const TenantDashboard = () => {
+    const { user } = useAuth();
     // Mock data for the dashboard
     const activeLeases = [
         { id: 1, property: 'Sunset Apartments, Unit 4B', landlord: 'Peter Kamau', rent: 'KES 45,000', status: 'Active', expiry: 'Dec 2026' },
@@ -50,13 +52,13 @@ const TenantDashboard = () => {
                 </div>
                 <div className="flex items-center gap-2 text-sm text-gray-400 font-medium bg-gray-50 px-3 py-1.5 rounded-lg border border-gray-100">
                     <ShieldCheck className="w-4 h-4 text-teal-600" />
-                    <span>Last updated: {new Date().toLocaleDateString()}</span>
+                    <span>Last updated: {user?.verification_date || new Date().toLocaleDateString()}</span>
                 </div>
             </div>
 
             {/* Section 1: Tenant Trust Profile Card */}
             <section className="animate-fadeInUp">
-                <TenantTrustCard payments={paymentHistory} activeLeases={activeLeases} />
+                <TenantTrustCard tenant={user} />
             </section>
 
             {/* Quick Stats & Secondary Info */}

@@ -3,8 +3,10 @@
 
 @layer base {
   body {
-    background-color: #F9FAFB; /* Tailwind gray-50 */
-    color: #111827; /* Tailwind gray-900 */
+    background-color: #F9FAFB;
+    /* Tailwind gray-50 */
+    color: #111827;
+    /* Tailwind gray-900 */
   }
 }
 
@@ -48,9 +50,20 @@
       opacity: 0;
       transform: translateY(20px);
     }
+
     to {
       opacity: 1;
       transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
     }
   }
 
@@ -59,6 +72,7 @@
       opacity: 0;
       transform: translateX(-20px);
     }
+
     to {
       opacity: 1;
       transform: translateX(0);
@@ -67,6 +81,10 @@
 
   .animate-fadeInUp {
     animation: fadeInUp 0.6s ease-out;
+  }
+
+  .animate-fadeIn {
+    animation: fadeIn 0.4s ease-out;
   }
 
   .animate-slideInLeft {

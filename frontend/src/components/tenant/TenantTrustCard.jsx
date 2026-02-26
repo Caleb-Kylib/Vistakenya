@@ -1,5 +1,6 @@
 import React from 'react';
 import { ShieldCheck, User, CreditCard, FileText, CheckCircle2, History } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import RentalScoreBadge from './RentalScoreBadge';
 import ProfileCompletionBar from './ProfileCompletionBar';
 
@@ -138,11 +139,21 @@ const TenantTrustCard = ({ tenant, variant = 'full' }) => {
                     </div>
 
                     <div className="flex flex-col justify-center gap-3">
-                        <button className="w-full py-3 bg-teal-600 text-white rounded-xl font-bold text-sm hover:bg-teal-700 transition-all shadow-sm shadow-teal-100">Accept Application</button>
-                        <div className="grid grid-cols-2 gap-3">
-                            <button className="py-2.5 bg-white text-gray-600 border border-gray-200 rounded-xl font-bold text-xs hover:bg-gray-50 transition-all">Review Profile</button>
-                            <button className="py-2.5 bg-white text-coral-600 border border-coral-200 rounded-xl font-bold text-xs hover:bg-coral-50 transition-all">Decline</button>
-                        </div>
+                        {data.verification_status === 'verified' ? (
+                            <div className="p-4 bg-teal-50 rounded-xl border border-teal-100">
+                                <div className="flex items-center gap-2 text-teal-700 mb-1">
+                                    <ShieldCheck className="w-4 h-4" />
+                                    <span className="text-xs font-black uppercase tracking-wider">Trusted Identity</span>
+                                </div>
+                                <p className="text-[10px] text-teal-600 font-medium italic">Your verified status increases your lease approval rate by 70%.</p>
+                            </div>
+                        ) : (
+                            <Link to="/tenant/verification" className="w-full py-3 bg-gray-900 text-white rounded-xl font-black text-sm hover:bg-teal-600 transition-all shadow-sm flex items-center justify-center gap-2">
+                                <ShieldCheck className="w-4 h-4" />
+                                Get Verified Now
+                            </Link>
+                        )}
+                        <button className="w-full py-2.5 bg-white text-gray-600 border border-gray-200 rounded-xl font-bold text-xs hover:bg-gray-50 transition-all">Download TenantPass</button>
                     </div>
                 </div>
             </div>
