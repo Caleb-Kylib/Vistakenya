@@ -2,50 +2,18 @@ import React, { useState } from 'react';
 import { Building, MapPin, PlusCircle, Search, Filter, Home, Users, CreditCard, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import StatCard from '../../components/StatCard';
+import { useProperties } from '../../context/PropertyContext';
+import { useAuth } from '../../context/AuthContext';
 
 const LandlordProperties = () => {
+    const { properties } = useProperties();
+    const { user } = useAuth();
     const [searchTerm, setSearchTerm] = useState('');
 
-    const [properties, setProperties] = useState([
-        {
-            id: 1,
-            name: 'Sunset Apartments',
-            location: 'Kilimani, Nairobi',
-            units: 12,
-            occupancy: '92%',
-            revenue: 'KES 540k',
-            image: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=400&q=80',
-            status: 'Verified',
-            active_leases: 11,
-            maintenance_requests: 2
-        },
-        {
-            id: 2,
-            name: 'Garden Estate Villas',
-            location: 'Garden Estate',
-            units: 4,
-            occupancy: '100%',
-            revenue: 'KES 320k',
-            image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=400&q=80',
-            status: 'Verified',
-            active_leases: 4,
-            maintenance_requests: 0
-        },
-        {
-            id: 3,
-            name: 'Lake View Residency',
-            location: 'Kisumu',
-            units: 8,
-            occupancy: '75%',
-            revenue: 'KES 240k',
-            image: 'https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&w=400&q=80',
-            status: 'Pending',
-            active_leases: 6,
-            maintenance_requests: 1
-        },
-    ]);
+    // Filter properties to only show those belonging to the current landlord
+    const myProperties = properties.filter(p => p.owner === (user?.name || 'Samuel Maina'));
 
-    const filteredProperties = properties.filter(prop =>
+    const filteredProperties = myProperties.filter(prop =>
         prop.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         prop.location.toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -55,108 +23,112 @@ const LandlordProperties = () => {
             {/* Header */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
                 <div>
-                    <h1 className="text-4xl font-black text-gray-900 tracking-tight">My Properties</h1>
-                    <p className="text-gray-500 mt-2 font-medium">Manage your real estate portfolio and track unit performance.</p>
+                    <h1 className="text-4xl font-black text-gray-900 tracking-tight uppercase tracking-tight">Portfolio Analysis</h1>
+                    <p className="text-gray-500 mt-2 font-medium">Manage your real estate assets and track unit performance in real-time.</p>
                 </div>
-                <Link to="/landlord/add-property" className="flex items-center gap-2 px-6 py-3.5 bg-teal-600 text-white rounded-2xl font-black hover:bg-teal-700 transition-all shadow-xl shadow-teal-100 hover:-translate-y-1 group">
+                <Link to="/landlord/add-property" className="flex items-center gap-2 px-8 py-4 bg-teal-600 text-white rounded-2xl font-black hover:bg-teal-700 transition-all shadow-xl shadow-teal-100 hover:-translate-y-1 group uppercase tracking-widest text-xs">
                     <PlusCircle className="w-5 h-5 group-hover:rotate-90 transition-transform duration-300" />
-                    List New Property
+                    List Asset
                 </Link>
             </div>
 
             {/* Quick Stats */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <StatCard title="Total Units" value="24" icon={Home} color="teal" />
-                <StatCard title="Active Tenants" value="21" icon={Users} color="orange" />
-                <StatCard title="Monthly Revenue" value="KES 1.1M" icon={CreditCard} color="green" />
+                <StatCard title="Global Assets" value={myProperties.length.toString()} icon={Home} color="teal" />
+                <StatCard title="Network Tenants" value="21" icon={Users} color="orange" />
+                <StatCard title="Est. Revenue" value="KES 1.4M" icon={CreditCard} color="green" />
             </div>
 
             {/* toolbar */}
-            <div className="bg-white p-4 rounded-3xl border border-gray-100 shadow-sm flex flex-col md:flex-row gap-4 items-center">
-                <div className="relative flex-1">
-                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+            <div className="bg-white p-5 rounded-[2rem] border border-gray-100 shadow-xl shadow-gray-100/50 flex flex-col md:flex-row gap-4 items-center">
+                <div className="relative flex-1 w-full">
+                    <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                     <input
                         type="text"
-                        placeholder="Search portfolio..."
-                        className="w-full pl-11 pr-4 py-3 bg-gray-50 border-none rounded-2xl text-sm font-bold focus:ring-2 focus:ring-teal-500/20 transition-all"
+                        placeholder="Search assets by name or coordinates..."
+                        className="w-full pl-14 pr-6 py-4 bg-gray-50 border-none rounded-2xl text-sm font-bold focus:ring-2 focus:ring-teal-500/10 transition-all"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
                 </div>
-                <div className="flex items-center gap-2">
-                    <button className="p-3 bg-gray-50 text-gray-500 rounded-2xl hover:bg-gray-100 transition-colors">
-                        <Filter className="w-5 h-5" />
-                    </button>
-                </div>
             </div>
 
             {/* Property List */}
-            <div className="grid grid-cols-1 gap-6">
-                {filteredProperties.map(property => (
-                    <Link
-                        to={`/landlord/dashboard`} // Since there's no specific detail page yet, we link to dashboard or a placeholder
+            <div className="grid grid-cols-1 gap-8">
+                {filteredProperties.length > 0 ? filteredProperties.map(property => (
+                    <div
                         key={property.id}
-                        className="group bg-white rounded-[2.5rem] border border-gray-100 shadow-xl shadow-gray-200/40 overflow-hidden hover:shadow-2xl hover:border-teal-100 transition-all duration-500 flex flex-col lg:flex-row"
+                        className="group bg-white rounded-[3rem] border border-gray-100 shadow-xl shadow-gray-200/20 overflow-hidden hover:shadow-2xl hover:border-teal-100 transition-all duration-500 flex flex-col lg:flex-row"
                     >
-                        <div className="lg:w-72 h-48 lg:h-auto overflow-hidden relative">
-                            <img src={property.image} alt={property.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-                            <div className="absolute top-4 left-4">
-                                <span className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest backdrop-blur-md shadow-sm border ${property.status === 'Verified' ? 'bg-white/90 text-teal-600 border-teal-100' : 'bg-white/90 text-orange-600 border-orange-100'
+                        <div className="lg:w-96 h-64 lg:h-auto overflow-hidden relative">
+                            <img src={property.image} alt={property.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" />
+                            <div className="absolute top-6 left-6">
+                                <span className={`px-6 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest backdrop-blur-md shadow-lg border ${property.status === 'Verified' ? 'bg-white/90 text-teal-600 border-teal-100' : 'bg-white/90 text-orange-600 border-orange-100'
                                     }`}>
                                     {property.status}
                                 </span>
                             </div>
                         </div>
 
-                        <div className="flex-1 p-8 flex flex-col justify-between">
-                            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-6">
+                        <div className="flex-1 p-10 flex flex-col justify-between">
+                            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-10">
                                 <div>
-                                    <h3 className="text-2xl font-black text-gray-900 group-hover:text-teal-600 transition-colors uppercase tracking-tight">{property.name}</h3>
-                                    <p className="text-gray-500 font-bold flex items-center gap-1.5 mt-1 text-sm uppercase tracking-wide">
+                                    <h3 className="text-3xl font-black text-gray-900 group-hover:text-teal-600 transition-colors uppercase tracking-tighter">{property.name}</h3>
+                                    <p className="text-gray-400 font-bold flex items-center gap-2 mt-2 text-sm uppercase tracking-widest">
                                         <MapPin className="w-4 h-4 text-teal-500" />
-                                        {property.location}
+                                        {property.location}, {property.city}
                                     </p>
                                 </div>
-                                <div className="flex items-center gap-2">
+                                <div className="flex items-center gap-6">
                                     <div className="text-right">
-                                        <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Total Revenue</p>
-                                        <p className="text-2xl font-black text-teal-600">{property.revenue}</p>
+                                        <p className="text-[10px] font-black text-gray-300 uppercase tracking-widest mb-1">Financial Yield</p>
+                                        <p className="text-3xl font-black text-teal-600">{property.revenue || 'KES 0'}</p>
                                     </div>
-                                    <ChevronRight className="w-6 h-6 text-gray-300 group-hover:text-teal-500 group-hover:translate-x-1 transition-all" />
+                                    <div className="p-3 bg-gray-50 rounded-2xl text-gray-300 group-hover:text-teal-500 group-hover:bg-teal-50 transition-all">
+                                        <ChevronRight className="w-6 h-6" />
+                                    </div>
                                 </div>
                             </div>
 
-                            <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 py-6 border-t border-gray-50">
+                            <div className="grid grid-cols-2 lg:grid-cols-4 gap-10 py-8 border-t border-gray-50">
                                 <div>
-                                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Occupancy</p>
-                                    <div className="flex items-center gap-3">
+                                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3">Asset Occupancy</p>
+                                    <div className="flex items-center gap-4">
                                         <div className="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden">
                                             <div
-                                                className="h-full bg-teal-500 rounded-full"
+                                                className="h-full bg-teal-500 rounded-full shadow-sm"
                                                 style={{ width: property.occupancy }}
                                             />
                                         </div>
-                                        <span className="text-sm font-black text-gray-700">{property.occupancy}</span>
+                                        <span className="text-xs font-black text-gray-700">{property.occupancy}</span>
                                     </div>
                                 </div>
                                 <div>
-                                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Total Units</p>
-                                    <p className="text-sm font-black text-gray-700">{property.units}</p>
+                                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Inventory Units</p>
+                                    <p className="text-sm font-black text-gray-900">{property.units}</p>
                                 </div>
                                 <div>
-                                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Active Leases</p>
-                                    <p className="text-sm font-black text-teal-600 font-black">{property.active_leases}</p>
+                                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Listing Price</p>
+                                    <p className="text-sm font-black text-teal-600 uppercase tracking-widest">KES {property.rent?.toLocaleString()}</p>
                                 </div>
                                 <div>
-                                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Issues</p>
-                                    <p className={`text-sm font-black ${property.maintenance_requests > 0 ? 'text-orange-600' : 'text-gray-700'}`}>
-                                        {property.maintenance_requests} Maintenance
-                                    </p>
+                                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Category</p>
+                                    <p className="text-sm font-black text-gray-900 uppercase tracking-widest">{property.category}</p>
                                 </div>
                             </div>
                         </div>
-                    </Link>
-                ))}
+                    </div>
+                )) : (
+                    <div className="py-24 bg-white rounded-[3rem] border border-dashed border-gray-100 text-center">
+                        <Home className="w-20 h-20 text-gray-100 mx-auto mb-6" />
+                        <h3 className="text-2xl font-black text-gray-900 uppercase tracking-tight">No digital assets found</h3>
+                        <p className="text-gray-400 font-bold mb-8">Start by listing your first property to the network.</p>
+                        <Link to="/landlord/add-property" className="inline-flex items-center gap-2 px-8 py-4 bg-gray-900 text-white rounded-2xl font-black hover:bg-teal-600 transition-all shadow-xl uppercase tracking-widest text-xs">
+                            <PlusCircle className="w-4 h-4" />
+                            Provision Initial Asset
+                        </Link>
+                    </div>
+                )}
             </div>
         </div>
     );

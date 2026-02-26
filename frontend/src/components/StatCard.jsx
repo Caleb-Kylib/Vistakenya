@@ -1,9 +1,9 @@
 import React from 'react';
 import { cn } from '../utils/cn';
 
-const StatCard = ({ title, value, icon, trend, trendValue, color = 'blue' }) => {
+const StatCard = ({ title, value, icon, trend, trendValue, color = 'teal' }) => {
     const colorClasses = {
-        blue: 'bg-blue-50 text-blue-600',
+        blue: 'bg-teal-50 text-teal-600', // Map blue to teal for consistency
         green: 'bg-green-50 text-green-600',
         purple: 'bg-purple-50 text-purple-600',
         orange: 'bg-orange-50 text-orange-600',
@@ -19,7 +19,7 @@ const StatCard = ({ title, value, icon, trend, trendValue, color = 'blue' }) => 
                     <p className="text-sm font-medium text-gray-500 truncate">{title}</p>
                     <p className="mt-1 text-3xl font-bold text-gray-900">{value}</p>
                 </div>
-                <div className={cn("p-3 rounded-lg", colorClasses[color] || colorClasses.blue)}>
+                <div className={cn("p-3 rounded-lg", colorClasses[color] || colorClasses.teal)}>
                     {icon && React.createElement(icon, { className: 'w-6 h-6' })}
                 </div>
             </div>

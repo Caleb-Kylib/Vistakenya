@@ -3,6 +3,7 @@ import { Outlet, Navigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
 import { useAuth } from '../context/AuthContext';
+import { cn } from '../utils/cn';
 
 const DashboardLayout = () => {
     const { user, loading } = useAuth();
@@ -17,12 +18,15 @@ const DashboardLayout = () => {
     if (!user) return <Navigate to="/login" />;
 
     return (
-        <div className="antialiased bg-gray-50 dark:bg-gray-900">
+        <div className="antialiased bg-gray-50/50 min-h-screen">
             <Navbar toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
             <Sidebar isOpen={isSidebarOpen} />
 
-            <main className="p-4 sm:ml-64 pt-20 min-h-screen">
-                <div className="mx-auto max-w-screen-2xl">
+            <main className={cn(
+                "transition-all duration-500 p-4 sm:ml-72 pt-32 min-h-screen",
+                isSidebarOpen ? "blur-sm sm:blur-none" : ""
+            )}>
+                <div className="mx-auto max-w-screen-2xl animate-fadeIn">
                     <Outlet />
                 </div>
             </main>

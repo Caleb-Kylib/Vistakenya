@@ -1,213 +1,169 @@
 import React, { useState } from 'react';
-import { MapPin, Heart, Star, Filter, Search, ShieldCheck, Zap, Info } from 'lucide-react';
+import { Search, MapPin, Bed, Bath, Plus, Filter, SlidersHorizontal, ArrowRight, ShieldCheck, Star } from 'lucide-react';
+import { useProperties } from '../../context/PropertyContext';
+import { useApplications } from '../../context/ApplicationContext';
 import { useAuth } from '../../context/AuthContext';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const BrowseProperties = () => {
+    const { properties } = useProperties();
+    const { addApplication } = useApplications();
     const { user } = useAuth();
+    const navigate = useNavigate();
     const [searchTerm, setSearchTerm] = useState('');
-    const [filterCategory, setFilterCategory] = useState('All');
 
-    const properties = [
-        {
-            id: 1,
-            name: 'Sunset Apartments, Unit 4B',
-            location: 'Kilimani, Nairobi',
-            price: 45000,
-            rating: 4.8,
-            image: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=400&q=80',
-            amenities: ['CCTV', 'Borehole', 'Elevator', 'Backup Generator'],
-            type: 'Apartment',
-            isVerified: true
-        },
-        {
-            id: 2,
-            name: 'Garden Estate Villas',
-            location: 'Garden Estate, Nairobi',
-            price: 85000,
-            rating: 4.9,
-            image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=400&q=80',
-            amenities: ['Gym', 'Pool', 'Solar Water', 'Electric Fence'],
-            type: 'Villa',
-            isVerified: true
-        },
-        {
-            id: 3,
-            name: 'Lake View Residency',
-            location: 'Kisumu',
-            price: 24000,
-            rating: 4.5,
-            image: 'https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&w=400&q=80',
-            amenities: ['Wifi', 'Security', 'Parking'],
-            type: 'Studio',
-            isVerified: false
-        },
-        {
-            id: 4,
-            name: 'Westlands Modern Loft',
-            location: 'Westlands, Nairobi',
-            price: 65000,
-            rating: 4.7,
-            image: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=400&q=80',
-            amenities: ['Concierge', 'Rooftop Lounge', 'Fiber Internet'],
-            type: 'Apartment',
-            isVerified: true
-        },
-        {
-            id: 5,
-            name: 'Lavington Sky Villas',
-            location: 'Lavington, Nairobi',
-            price: 120000,
-            rating: 5.0,
-            image: 'https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=400&q=80',
-            amenities: ['Smart Home', 'Private Lift', 'Sauna', 'Dsq'],
-            type: 'Penthouse',
-            isVerified: true
+    // Only show verified properties to tenants
+    const verifiedProperties = properties.filter(p => p.status === 'Verified');
+
+    const filtered = verifiedProperties.filter(p =>
+        p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        p.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        p.city.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    const handleApply = (property) => {
+        if (!user) {
+            alert('Please login to apply for properties');
+            navigate('/login');
+            return;
         }
-    ];
 
-    const categories = ['All', 'Apartment', 'Villa', 'Studio', 'Penthouse'];
+        const applicationData = {
+            propertyId: property.id,
+            property: property.name,
+            location: property.location,
+            price: property.rent,
+            status: 'Pending',
+            tenantId: user.id || 'tenant-1',
+            tenantName: user.name,
+            landlord: property.owner,
+            verification_status: user.verified ? 'verified' : 'pending',
+            rental_score: 85,
+            payment_reliability: 95,
+            completed_leases_count: 2,
+            completion_percent: 100,
+            joined_at: 'Jan 2024',
+            rating: 4.8,
+            image: property.image
+        };
 
-    const filteredProperties = properties.filter(prop => {
-        const matchesSearch = prop.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            prop.location.toLowerCase().includes(searchTerm.toLowerCase());
-        const matchesCategory = filterCategory === 'All' || prop.type === filterCategory;
-        return matchesSearch && matchesCategory;
-    });
+        addApplication(applicationData);
+        alert('Application submitted successfully!');
+        navigate('/tenant/applications');
+    };
 
     return (
-        <div className="max-w-7xl mx-auto space-y-10 pb-20">
-            {/* Header with Search */}
-            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
-                <div>
-                    <h1 className="text-4xl font-black text-gray-900 tracking-tight">Browse Properties</h1>
-                    <p className="text-gray-500 mt-2 font-medium">Find your next home with <span className="text-teal-600 font-bold">verified listings</span>.</p>
+        <div className="max-w-7xl mx-auto space-y-12 pb-24">
+            {/* Header & Search */}
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
+                <div className="space-y-4">
+                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-teal-50 text-teal-600 rounded-full text-xs font-black uppercase tracking-widest border border-teal-100/50">
+                        <ShieldCheck className="w-4 h-4" />
+                        Verified Network Inventory
+                    </div>
+                    <h1 className="text-5xl font-black text-gray-900 tracking-tight uppercase tracking-tighter">Explore Digital Assets</h1>
+                    <p className="text-gray-400 font-medium text-lg max-w-xl leading-relaxed">
+                        Every listing in our network is audited for quality and security. Find your next high-performance home today.
+                    </p>
                 </div>
+            </div>
 
-                <div className="flex flex-col sm:flex-row items-center gap-4 flex-1 max-w-2xl">
-                    <div className="relative w-full">
-                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
+            <div className="relative group">
+                <div className="absolute -inset-1 bg-gradient-to-r from-teal-500 to-teal-700 rounded-[2.5rem] blur opacity-25 group-hover:opacity-40 transition duration-1000 group-hover:duration-200"></div>
+                <div className="relative bg-white p-6 rounded-[2.5rem] border border-gray-100 shadow-2xl flex flex-col md:flex-row gap-6 items-center">
+                    <div className="relative flex-1 w-full">
+                        <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                         <input
                             type="text"
-                            placeholder="Search by area or property name..."
-                            className="w-full pl-12 pr-4 py-4 bg-white border border-gray-100 rounded-2xl shadow-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all font-medium"
+                            placeholder="Search by city, neighborhood or building name..."
+                            className="w-full pl-16 pr-8 py-5 bg-gray-50 border-none rounded-[1.5rem] font-bold text-gray-800 placeholder:text-gray-400 focus:ring-2 focus:ring-teal-500/10 transition-all text-lg"
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
                     </div>
-                    <div className="flex gap-2 w-full sm:w-auto">
-                        <button className="p-4 bg-white border border-gray-100 rounded-2xl shadow-sm text-gray-400 hover:text-teal-600 transition-all">
-                            <Filter className="w-6 h-6" />
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            {/* Verification Banner if not verified */}
-            {user?.verification_status !== 'verified' && (
-                <div className="bg-orange-50 border border-orange-100 p-6 rounded-[2rem] flex flex-col md:flex-row items-center justify-between gap-6 animate-fadeIn">
-                    <div className="flex items-center gap-4 text-center md:text-left">
-                        <div className="p-3 bg-white rounded-2xl shadow-sm">
-                            <Zap className="w-8 h-8 text-orange-600" />
-                        </div>
-                        <div>
-                            <h3 className="text-lg font-black text-orange-900 leading-tight">Identity Verification Required</h3>
-                            <p className="text-xs text-orange-800 font-medium mt-1">Some premium properties are only visible or bookable by verified tenants. Boost your profile now.</p>
-                        </div>
-                    </div>
-                    <Link to="/tenant/verification" className="px-8 py-3 bg-orange-600 text-white rounded-xl font-black text-sm shadow-lg shadow-orange-100 hover:bg-orange-700 transition-all">
-                        Get Verified
-                    </Link>
-                </div>
-            )}
-
-            {/* Categories */}
-            <div className="flex items-center gap-4 overflow-x-auto pb-2 scrollbar-hide">
-                {categories.map(cat => (
-                    <button
-                        key={cat}
-                        onClick={() => setFilterCategory(cat)}
-                        className={`px-6 py-2.5 rounded-full font-black text-xs uppercase tracking-widest transition-all whitespace-nowrap ${filterCategory === cat
-                                ? 'bg-gray-900 text-white shadow-xl shadow-gray-200'
-                                : 'bg-white text-gray-400 border border-gray-100 hover:bg-gray-50'
-                            }`}
-                    >
-                        {cat}
+                    <button className="w-full md:w-auto px-10 py-5 bg-gray-900 text-white rounded-[1.5rem] font-black uppercase tracking-widest text-xs flex items-center justify-center gap-3 hover:bg-teal-600 transition-all shadow-xl">
+                        <SlidersHorizontal className="w-4 h-4" />
+                        Advanced Filters
                     </button>
-                ))}
+                </div>
             </div>
 
-            {/* Properties Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {filteredProperties.map(prop => (
-                    <div key={prop.id} className="group bg-white rounded-[2.5rem] border border-gray-100 shadow-sm overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
-                        {/* Image Section */}
-                        <div className="relative h-64 overflow-hidden">
-                            <img src={prop.image} alt={prop.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-                            <div className="absolute top-4 left-4 flex gap-2">
-                                {prop.isVerified && (
-                                    <span className="p-2 bg-white/90 backdrop-blur-md rounded-xl shadow-sm text-teal-600">
-                                        <ShieldCheck className="w-5 h-5" />
-                                    </span>
-                                )}
-                                <span className="px-3 py-1 bg-gray-900/40 backdrop-blur-md text-white rounded-lg text-[10px] font-black uppercase tracking-wider">
-                                    {prop.type}
+            {/* Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                {filtered.map(property => (
+                    <div key={property.id} className="group bg-white rounded-[3rem] border border-gray-100 shadow-xl shadow-gray-200/20 overflow-hidden hover:shadow-2xl hover:border-teal-100 transition-all duration-500 flex flex-col h-full">
+                        <div className="h-72 overflow-hidden relative">
+                            <img src={property.image} alt={property.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
+                            <div className="absolute top-6 left-6 flex flex-col gap-2">
+                                <span className="px-4 py-2 bg-white/95 backdrop-blur-md rounded-xl text-[10px] font-black text-teal-600 uppercase tracking-widest border border-teal-100 shadow-lg">
+                                    {property.category}
+                                </span>
+                                <span className="px-4 py-2 bg-gray-900/90 backdrop-blur-md rounded-xl text-[10px] font-black text-white uppercase tracking-widest border border-white/10 shadow-lg flex items-center gap-2">
+                                    <Star className="w-3 h-3 text-yellow-400 fill-yellow-400" />
+                                    4.8
                                 </span>
                             </div>
-                            <button className="absolute top-4 right-4 p-2.5 bg-white/90 backdrop-blur-md rounded-xl shadow-sm text-gray-400 hover:text-coral-500 transition-all">
-                                <Heart className="w-5 h-5" />
-                            </button>
                         </div>
 
-                        {/* Content Section */}
-                        <div className="p-8">
-                            <div className="flex items-center justify-between mb-2">
-                                <div className="flex items-center gap-1.5">
-                                    <Star className="w-4 h-4 text-orange-400 fill-orange-400" />
-                                    <span className="text-sm font-black text-gray-900">{prop.rating}</span>
+                        <div className="p-10 flex-1 flex flex-col justify-between">
+                            <div>
+                                <div className="flex justify-between items-start mb-4">
+                                    <div>
+                                        <h3 className="text-2xl font-black text-gray-900 uppercase tracking-tighter group-hover:text-teal-600 transition-colors">{property.name}</h3>
+                                        <p className="text-gray-400 font-bold flex items-center gap-2 mt-2 text-xs uppercase tracking-widest">
+                                            <MapPin className="w-4 h-4 text-teal-500" />
+                                            {property.location}, {property.city}
+                                        </p>
+                                    </div>
+                                    <p className="text-2xl font-black text-teal-600 uppercase tracking-tighter">KES {property.rent?.toLocaleString()}</p>
                                 </div>
-                                <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Available Now</span>
+
+                                <div className="flex items-center gap-8 py-8 border-y border-gray-50 my-8">
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-10 h-10 rounded-2xl bg-teal-50 flex items-center justify-center">
+                                            <Bed className="w-5 h-5 text-teal-600" />
+                                        </div>
+                                        <div>
+                                            <p className="text-[9px] font-black text-gray-300 uppercase tracking-widest">Bedrooms</p>
+                                            <p className="text-sm font-black text-gray-700">{property.bedrooms || '2'}</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-10 h-10 rounded-2xl bg-teal-50 flex items-center justify-center">
+                                            <Bath className="w-5 h-5 text-teal-600" />
+                                        </div>
+                                        <div>
+                                            <p className="text-[9px] font-black text-gray-300 uppercase tracking-widest">Bathrooms</p>
+                                            <p className="text-sm font-black text-gray-700">{property.bathrooms || '2'}</p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
-                            <h3 className="text-2xl font-black text-gray-900 leading-tight mb-2 group-hover:text-teal-600 transition-colors uppercase tracking-tight">{prop.name}</h3>
-                            <p className="flex items-center gap-1 text-sm text-gray-500 font-medium mb-6">
-                                <MapPin className="w-4 h-4" />
-                                {prop.location}
-                            </p>
-
-                            {/* Unique Amenities */}
-                            <div className="flex flex-wrap gap-2 mb-8">
-                                {prop.amenities.map(amenity => (
-                                    <span key={amenity} className="px-3 py-1 bg-teal-50 text-teal-700 rounded-lg text-[9px] font-black uppercase tracking-wider border border-teal-100">
-                                        {amenity}
-                                    </span>
-                                ))}
-                            </div>
-
-                            <div className="flex items-center justify-between pt-6 border-t border-gray-50">
-                                <div>
-                                    <p className="text-[10px] text-gray-400 font-black uppercase tracking-widest">Starting from</p>
-                                    <p className="text-2xl font-black text-gray-900">KES {prop.price.toLocaleString()}<span className="text-xs text-gray-400 font-bold">/mo</span></p>
-                                </div>
-                                <button className="p-4 bg-gray-900 text-white rounded-2xl font-black hover:bg-teal-600 transition-all shadow-xl shadow-gray-100">
-                                    View Details
+                            <div className="flex items-center gap-4">
+                                <button className="flex-1 px-8 py-4 bg-gray-50 text-gray-400 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-teal-50 hover:text-teal-600 transition-all border border-transparent hover:border-teal-100">
+                                    Quick View
+                                </button>
+                                <button
+                                    onClick={() => handleApply(property)}
+                                    className="flex-1 px-8 py-4 bg-teal-600 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-lg shadow-teal-100 hover:bg-teal-700 hover:-translate-y-1 transition-all flex items-center justify-center gap-2 group/btn"
+                                >
+                                    Reserve Asset
+                                    <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-1 transition-transform" />
                                 </button>
                             </div>
                         </div>
                     </div>
                 ))}
-            </div>
 
-            {/* Empty State */}
-            {filteredProperties.length === 0 && (
-                <div className="py-20 text-center">
-                    <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <Info className="w-10 h-10 text-gray-300" />
+                {filtered.length === 0 && (
+                    <div className="col-span-full py-32 text-center bg-white rounded-[3rem] border border-dashed border-gray-200">
+                        <Search className="w-16 h-16 text-gray-100 mx-auto mb-6" />
+                        <h3 className="text-2xl font-black text-gray-900 uppercase tracking-tight">Supply Unavailable</h3>
+                        <p className="text-gray-400 font-bold">No assets match your current search parameters. Try adjusting your filters.</p>
                     </div>
-                    <h2 className="text-2xl font-black text-gray-900">No properties found</h2>
-                    <p className="text-gray-500 font-medium mt-2">Try adjusting your search terms or filters.</p>
-                </div>
-            )}
+                )}
+            </div>
         </div>
     );
 };

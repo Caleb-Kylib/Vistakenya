@@ -1,46 +1,19 @@
 import React from 'react';
 import { ClipboardList, CheckCircle2, XCircle, Clock, MapPin, Building, ArrowRight, Info, Heart, Star } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useApplications } from '../../context/ApplicationContext';
+import { useAuth } from '../../context/AuthContext';
 
 const TenantApplications = () => {
-    const applications = [
-        {
-            id: "APP-2024-001",
-            property: "Sunset Apartments, Unit 4B",
-            location: "Kilimani, Nairobi",
-            price: 45000,
-            status: "Accepted",
-            date: "Feb 02, 2024",
-            image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=400&q=80",
-            landlord: "Alice Wanjiku",
-            rating: 4.8
-        },
-        {
-            id: "APP-2024-002",
-            property: "Lake View Residency, Studio 2",
-            location: "Kisumu",
-            price: 24000,
-            status: "Pending",
-            date: "Feb 04, 2024",
-            image: "https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&w=400&q=80",
-            landlord: "Peter Kamau",
-            rating: 4.5
-        },
-        {
-            id: "APP-2023-014",
-            property: "Garden Estate Villas, No. 12",
-            location: "Garden Estate, Nairobi",
-            price: 85000,
-            status: "Declined",
-            date: "Jan 15, 2024",
-            image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=400&q=80",
-            landlord: "John Doe",
-            rating: 4.9
-        }
-    ];
+    const { user } = useAuth();
+    const { applications } = useApplications();
+
+    // Filter applications for this tenant
+    const myApplications = applications.filter(app => app.tenantId === user?.id || app.tenantName === user?.name);
 
     const getStatusStyle = (status) => {
         switch (status) {
+            case 'Approved':
             case 'Accepted': return 'bg-teal-50 text-teal-700 ring-teal-100 ring-1';
             case 'Declined': return 'bg-red-50 text-red-700 ring-red-100 ring-1';
             default: return 'bg-orange-50 text-orange-700 ring-orange-100 ring-1';
@@ -49,10 +22,17 @@ const TenantApplications = () => {
 
     const getStatusIcon = (status) => {
         switch (status) {
+            case 'Approved':
             case 'Accepted': return <CheckCircle2 className="w-4 h-4 text-teal-600" />;
             case 'Declined': return <XCircle className="w-4 h-4 text-red-600" />;
             default: return <Clock className="w-4 h-4 text-orange-600" />;
         }
+    };
+
+    const stats = {
+        Approved: myApplications.filter(a => a.status === 'Approved' || a.status === 'Accepted').length,
+        Pending: myApplications.filter(a => a.status === 'Pending').length,
+        Declined: myApplications.filter(a => a.status === 'Declined').length,
     };
 
     return (
@@ -71,28 +51,32 @@ const TenantApplications = () => {
                     <div className="p-2 bg-teal-50 rounded-xl w-fit group-hover:bg-white group-hover:shadow-sm">
                         <CheckCircle2 className="w-5 h-5 text-teal-600" />
                     </div>
-                    <p className="text-2xl font-black text-gray-900 mt-4 leading-tight">1</p>
+                    <p className="text-2xl font-black text-gray-900 mt-4 leading-tight">{stats.Approved}</p>
                     <p className="text-[10px] text-gray-400 font-black uppercase tracking-widest mt-1">Accepted</p>
                 </div>
                 <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm transition-all hover:bg-orange-50/50 group animate-fadeIn">
                     <div className="p-2 bg-orange-50 rounded-xl w-fit group-hover:bg-white group-hover:shadow-sm">
                         <Clock className="w-5 h-5 text-orange-600" />
                     </div>
-                    <p className="text-2xl font-black text-gray-900 mt-4 leading-tight">1</p>
+                    <p className="text-2xl font-black text-gray-900 mt-4 leading-tight">{stats.Pending}</p>
                     <p className="text-[10px] text-gray-400 font-black uppercase tracking-widest mt-1">Pending</p>
                 </div>
                 <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm transition-all hover:bg-red-50/50 group">
                     <div className="p-2 bg-red-50 rounded-xl w-fit group-hover:bg-white group-hover:shadow-sm">
                         <XCircle className="w-5 h-5 text-red-600" />
                     </div>
-                    <p className="text-2xl font-black text-gray-900 mt-4 leading-tight">1</p>
+                    <p className="text-2xl font-black text-gray-900 mt-4 leading-tight">{stats.Declined}</p>
                     <p className="text-[10px] text-gray-400 font-black uppercase tracking-widest mt-1">Declined</p>
                 </div>
                 <div className="bg-gray-900 p-6 rounded-3xl text-white shadow-xl shadow-gray-200 group">
                     <div className="p-2 bg-white/10 rounded-xl w-fit">
                         <Star className="w-5 h-5 text-teal-400 fill-teal-400" />
                     </div>
-                    <p className="text-2xl font-black mt-4 leading-tight">100%</p>
+                    <p className="text-2xl font-black mt-4 leading-tight">
+                        {myApplications.length > 0
+                            ? Math.round((stats.Approved / myApplications.length) * 100)
+                            : 0}%
+                    </p>
                     <p className="text-[10px] font-black uppercase tracking-widest mt-1 opacity-70">Success Rate</p>
                 </div>
             </div>
@@ -104,7 +88,7 @@ const TenantApplications = () => {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {applications.map(app => (
+                    {myApplications.map(app => (
                         <div key={app.id} className="group bg-white rounded-[2.5rem] border border-gray-100 shadow-sm overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
                             {/* Image Section */}
                             <div className="relative h-48 overflow-hidden">
@@ -135,16 +119,16 @@ const TenantApplications = () => {
                                 <div className="grid grid-cols-2 gap-4 py-6 border-y border-gray-50">
                                     <div className="space-y-1">
                                         <p className="text-[10px] text-gray-400 font-black uppercase tracking-widest">Submitted On</p>
-                                        <p className="text-xs font-bold text-gray-900">{app.date}</p>
+                                        <p className="text-xs font-bold text-gray-900">{app.applied_date}</p>
                                     </div>
                                     <div className="space-y-1">
                                         <p className="text-[10px] text-gray-400 font-black uppercase tracking-widest">Monthly Rent</p>
-                                        <p className="text-xs font-bold text-teal-600">KES {app.price.toLocaleString()}</p>
+                                        <p className="text-xs font-bold text-teal-600">KES {(app.rent || app.price)?.toLocaleString()}</p>
                                     </div>
                                 </div>
 
                                 <div className="pt-8">
-                                    {app.status === 'Accepted' ? (
+                                    {(app.status === 'Accepted' || app.status === 'Approved') ? (
                                         <Link
                                             to="/tenant/leases"
                                             className="flex items-center justify-center gap-2 w-full py-4 bg-teal-600 text-white rounded-2xl font-black text-xs hover:bg-teal-700 transition-all shadow-xl shadow-teal-100"
@@ -162,6 +146,19 @@ const TenantApplications = () => {
                             </div>
                         </div>
                     ))}
+
+                    {myApplications.length === 0 && (
+                        <div className="col-span-full py-20 text-center">
+                            <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <ClipboardList className="w-10 h-10 text-gray-300" />
+                            </div>
+                            <h3 className="text-xl font-bold text-gray-900">No applications found</h3>
+                            <p className="text-gray-500 mt-2">You haven't applied for any properties yet.</p>
+                            <Link to="/tenant/browse" className="inline-block mt-6 px-8 py-3 bg-teal-600 text-white rounded-xl font-black text-xs uppercase tracking-widest shadow-lg shadow-teal-100">
+                                Browse Properties
+                            </Link>
+                        </div>
+                    )}
                 </div>
             </div>
 

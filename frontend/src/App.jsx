@@ -1,6 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
+import { PropertyProvider } from './context/PropertyContext';
+import { ApplicationProvider } from './context/ApplicationContext';
 import DashboardLayout from './layouts/DashboardLayout';
 
 // Auth Pages
@@ -21,13 +23,6 @@ import TenantVerification from './pages/tenant/Verification';
 import BrowseProperties from './pages/tenant/BrowseProperties';
 import TenantApplications from './pages/tenant/Applications';
 import TenantPayments from './pages/tenant/Payments';
-// Placeholder for other pages
-const Placeholder = ({ title }) => (
-  <div className="card p-8 text-center">
-    <h2 className="text-2xl font-bold text-gray-900 mb-4">{title}</h2>
-    <p className="text-gray-500">This page is coming soon in the next update.</p>
-  </div>
-);
 
 // Landlord Pages
 import LandlordDashboard from './pages/landlord/Dashboard';
@@ -38,55 +33,63 @@ import LandlordApplications from './pages/landlord/Applications';
 
 // Admin Pages
 import AdminDashboard from './pages/admin/Dashboard';
+import ManageLandlords from './pages/admin/Landlords';
+import VerifyTenants from './pages/admin/Tenants';
+import SystemProperties from './pages/admin/SystemProperties';
+import SystemStats from './pages/admin/SystemStats';
 
 function App() {
   return (
     <AuthProvider>
-      <Router>
-        <Routes>
-          {/* Public Routes */}
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/properties" element={<PropertiesPage />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/contact" element={<ContactPage />} />
-          <Route path="/how-it-works" element={<HowItWorksPage />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/get-started" element={<Signup />} />
+      <PropertyProvider>
+        <ApplicationProvider>
+          <Router>
+            <Routes>
+              {/* Public Routes */}
+              <Route path="/" element={<LandingPage />} />
+              <Route path="/properties" element={<PropertiesPage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/contact" element={<ContactPage />} />
+              <Route path="/how-it-works" element={<HowItWorksPage />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
+              <Route path="/get-started" element={<Signup />} />
 
-          {/* Tenant Routes */}
-          <Route element={<DashboardLayout />}>
-            <Route path="/tenant/dashboard" element={<TenantDashboard />} />
-            <Route path="/tenant/browse" element={<BrowseProperties />} />
-            <Route path="/tenant/applications" element={<TenantApplications />} />
-            <Route path="/tenant/leases" element={<TenantLeases />} />
-            <Route path="/tenant/leases/:id" element={<LeaseDetail />} />
-            <Route path="/tenant/payments" element={<TenantPayments />} />
-            <Route path="/tenant/verification" element={<TenantVerification />} />
-          </Route>
+              {/* Tenant Routes */}
+              <Route element={<DashboardLayout />}>
+                <Route path="/tenant/dashboard" element={<TenantDashboard />} />
+                <Route path="/tenant/browse" element={<BrowseProperties />} />
+                <Route path="/tenant/applications" element={<TenantApplications />} />
+                <Route path="/tenant/leases" element={<TenantLeases />} />
+                <Route path="/tenant/leases/:id" element={<LeaseDetail />} />
+                <Route path="/tenant/payments" element={<TenantPayments />} />
+                <Route path="/tenant/verification" element={<TenantVerification />} />
+              </Route>
 
-          {/* Landlord Routes */}
-          <Route element={<DashboardLayout />}>
-            <Route path="/landlord/dashboard" element={<LandlordDashboard />} />
-            <Route path="/landlord/properties" element={<LandlordProperties />} />
-            <Route path="/landlord/add-property" element={<AddProperty />} />
-            <Route path="/landlord/applications" element={<LandlordApplications />} />
-            <Route path="/landlord/leases" element={<LandlordLeases />} />
-          </Route>
+              {/* Landlord Routes */}
+              <Route element={<DashboardLayout />}>
+                <Route path="/landlord/dashboard" element={<LandlordDashboard />} />
+                <Route path="/landlord/properties" element={<LandlordProperties />} />
+                <Route path="/landlord/add-property" element={<AddProperty />} />
+                <Route path="/landlord/applications" element={<LandlordApplications />} />
+                <Route path="/landlord/leases" element={<LandlordLeases />} />
+              </Route>
 
-          {/* Admin Routes */}
-          <Route element={<DashboardLayout />}>
-            <Route path="/admin/dashboard" element={<AdminDashboard />} />
-            <Route path="/admin/landlords" element={<Placeholder title="Manage Landlords" />} />
-            <Route path="/admin/tenants" element={<Placeholder title="Verify Tenants" />} />
-            <Route path="/admin/properties" element={<Placeholder title="System Properties" />} />
-            <Route path="/admin/stats" element={<Placeholder title="System Statistics" />} />
-          </Route>
+              {/* Admin Routes */}
+              <Route element={<DashboardLayout />}>
+                <Route path="/admin/dashboard" element={<AdminDashboard />} />
+                <Route path="/admin/landlords" element={<ManageLandlords />} />
+                <Route path="/admin/tenants" element={<VerifyTenants />} />
+                <Route path="/admin/properties" element={<SystemProperties />} />
+                <Route path="/admin/stats" element={<SystemStats />} />
+              </Route>
 
-          {/* 404 Redirect */}
-          <Route path="*" element={<Navigate to="/" />} />
-        </Routes>
-      </Router>
+              {/* 404 Redirect */}
+              <Route path="*" element={<Navigate to="/" />} />
+            </Routes>
+          </Router>
+        </ApplicationProvider>
+      </PropertyProvider>
     </AuthProvider>
   );
 }

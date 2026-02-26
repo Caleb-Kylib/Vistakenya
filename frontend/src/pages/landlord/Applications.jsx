@@ -1,81 +1,39 @@
-import React, { useState } from 'react';
 import { Building, Users, Search, Filter, ShieldCheck, CheckCircle2, XCircle, Clock } from 'lucide-react';
 import TenantTrustCard from '../../components/tenant/TenantTrustCard';
+import { useApplications } from '../../context/ApplicationContext';
+import { useAuth } from '../../context/AuthContext';
 
 const LandlordApplications = () => {
+    const { user } = useAuth();
+    const { applications, updateApplicationStatus } = useApplications();
     const [filter, setFilter] = useState('All');
     const [searchTerm, setSearchTerm] = useState('');
     const [showVerifiedOnly, setShowVerifiedOnly] = useState(false);
 
-    const [applications, setApplications] = useState([
-        {
-            id: 201,
-            tenant: 'Alice Wanjiku',
-            property: 'Sunset Apartments, Unit 4B',
-            status: 'Pending',
-            verification_status: 'verified',
-            rental_score: 92,
-            payment_reliability: 100,
-            completed_leases_count: 3,
-            completion_percent: 100,
-            joined_date: 'Mar 2023',
-            applied_date: '2024-02-15'
-        },
-        {
-            id: 202,
-            tenant: 'John Doe',
-            property: 'Lake View Residency, Studio 2',
-            status: 'Pending',
-            verification_status: 'pending',
-            rental_score: 65,
-            payment_reliability: 85,
-            completed_leases_count: 1,
-            completion_percent: 60,
-            joined_date: 'Nov 2024',
-            applied_date: '2024-02-20'
-        },
-        {
-            id: 203,
-            tenant: 'Grace Njoki',
-            property: 'Garden Estate Villas, No. 12',
-            status: 'Approved',
-            verification_status: 'verified',
-            rental_score: 88,
-            payment_reliability: 95,
-            completed_leases_count: 2,
-            completion_percent: 90,
-            joined_date: 'Jan 2024',
-            applied_date: '2024-01-10'
-        },
-    ]);
+    // Filter applications for this landlord
+    const myApplications = applications.filter(app => app.landlord === user?.name);
 
     const handleAccept = (appId) => {
-        setApplications(prev => prev.map(app =>
-            app.id === appId ? { ...app, status: 'Approved' } : app
-        ));
-        alert('Application approved! Lease drafting started.');
+        updateApplicationStatus(appId, 'Approved');
     };
 
     const handleDecline = (appId) => {
-        setApplications(prev => prev.map(app =>
-            app.id === appId ? { ...app, status: 'Declined' } : app
-        ));
-        alert('Application declined.');
+        updateApplicationStatus(appId, 'Declined');
     };
 
-    const filteredApplications = applications.filter(app => {
+    const filteredApplications = myApplications.filter(app => {
         const matchesFilter = filter === 'All' || app.status === filter;
-        const matchesSearch = app.tenant.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            app.property.toLowerCase().includes(searchTerm.toLowerCase());
+        const matchesSearch = app.tenantName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            app.property?.toLowerCase().includes(searchTerm.toLowerCase());
         const matchesVerified = !showVerifiedOnly || app.verification_status === 'verified';
         return matchesFilter && matchesSearch && matchesVerified;
     });
 
     const statusCounts = {
-        All: applications.length,
-        Pending: applications.filter(a => a.status === 'Pending').length,
-        Approved: applications.filter(a => a.status === 'Approved').length,
-        Declined: applications.filter(a => a.status === 'Declined').length,
+        All: myApplications.length,
+        Pending: myApplications.filter(a => a.status === 'Pending').length,
+        Approved: myApplications.filter(a => a.status === 'Approved').length,
+        Declined: myApplications.filter(a => a.status === 'Declined').length,
     };
 
     return (
@@ -97,8 +55,8 @@ const LandlordApplications = () => {
                                 key={tab}
                                 onClick={() => setFilter(tab)}
                                 className={`px-5 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${filter === tab
-                                        ? 'bg-teal-600 text-white shadow-lg shadow-teal-100'
-                                        : 'bg-gray-50 text-gray-500 hover:bg-gray-100'
+                                    ? 'bg-teal-600 text-white shadow-lg shadow-teal-100'
+                                    : 'bg-gray-50 text-gray-500 hover:bg-gray-100'
                                     }`}
                             >
                                 {tab}
@@ -125,8 +83,8 @@ const LandlordApplications = () => {
                         <button
                             onClick={() => setShowVerifiedOnly(!showVerifiedOnly)}
                             className={`flex items-center gap-2 px-4 py-3 rounded-2xl text-xs font-black transition-all border ${showVerifiedOnly
-                                    ? 'bg-teal-50 border-teal-200 text-teal-700'
-                                    : 'bg-white border-gray-100 text-gray-500 hover:bg-gray-50'
+                                ? 'bg-teal-50 border-teal-200 text-teal-700'
+                                : 'bg-white border-gray-100 text-gray-500 hover:bg-gray-50'
                                 }`}
                         >
                             <ShieldCheck className={`w-4 h-4 ${showVerifiedOnly ? 'text-teal-600' : 'text-gray-400'}`} />
@@ -152,7 +110,7 @@ const LandlordApplications = () => {
                                 {app.status === 'Declined' && <XCircle className="w-4 h-4 text-coral-500" />}
                                 {app.status === 'Pending' && <Clock className="w-4 h-4 text-orange-500" />}
                                 <span className={`text-[10px] font-black uppercase tracking-widest ${app.status === 'Approved' ? 'text-teal-600' :
-                                        app.status === 'Declined' ? 'text-coral-600' : 'text-orange-600'
+                                    app.status === 'Declined' ? 'text-coral-600' : 'text-orange-600'
                                     }`}>
                                     {app.status}
                                 </span>
@@ -169,8 +127,8 @@ const LandlordApplications = () => {
 
                         {app.status !== 'Pending' && (
                             <div className={`p-4 rounded-2xl border flex items-center justify-between transition-all ${app.status === 'Approved'
-                                    ? 'bg-teal-50 border-teal-100 text-teal-800'
-                                    : 'bg-gray-50 border-gray-100 text-gray-500'
+                                ? 'bg-teal-50 border-teal-100 text-teal-800'
+                                : 'bg-gray-50 border-gray-100 text-gray-500'
                                 }`}>
                                 <div className="flex items-center gap-2">
                                     <ShieldCheck className={`w-4 h-4 ${app.status === 'Approved' ? 'text-teal-600' : 'text-gray-400'}`} />
