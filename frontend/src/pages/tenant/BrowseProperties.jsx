@@ -21,7 +21,7 @@ const BrowseProperties = () => {
         p.city.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    const handleApply = (property) => {
+    const handleApply = async (property) => {
         if (!user) {
             alert('Please login to apply for properties');
             navigate('/login');
@@ -47,9 +47,13 @@ const BrowseProperties = () => {
             image: property.image
         };
 
-        addApplication(applicationData);
-        alert('Application submitted successfully!');
-        navigate('/tenant/applications');
+        const result = await addApplication(applicationData);
+        if (result) {
+            alert('Application submitted successfully!');
+            navigate('/tenant/applications');
+        } else {
+            alert('Failed to submit application. Please try again.');
+        }
     };
 
     return (

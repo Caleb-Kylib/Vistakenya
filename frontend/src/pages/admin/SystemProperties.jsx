@@ -14,8 +14,8 @@ const SystemProperties = () => {
         p.owner.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    const handleApprove = (id) => {
-        approveProperty(id);
+    const handleApprove = async (id) => {
+        await approveProperty(id);
         setSelectedProperty(null);
         alert('Property approved and published to the network!');
     };
@@ -273,7 +273,7 @@ const SystemProperties = () => {
                                             Audit Passed
                                         </button>
                                     )}
-                                    0</div>
+                                </div>
                             </div>
                         </div>
                     </div>

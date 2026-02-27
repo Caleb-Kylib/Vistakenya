@@ -7,10 +7,12 @@ export const PropertyProvider = ({ children }) => {
     const [properties, setProperties] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    const fetchProperties = async () => {
+    const fetchProperties = async (filters = {}) => {
         try {
             setLoading(true);
-            const response = await fetch(`${API_BASE_URL}/properties`);
+            const queryParams = new URLSearchParams(filters).toString();
+            const url = `${API_BASE_URL}/properties${queryParams ? `?${queryParams}` : ''}`;
+            const response = await fetch(url);
             const data = await response.json();
             setProperties(data);
         } catch (error) {

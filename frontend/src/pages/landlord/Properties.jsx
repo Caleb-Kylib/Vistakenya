@@ -6,7 +6,7 @@ import { useProperties } from '../../context/PropertyContext';
 import { useAuth } from '../../context/AuthContext';
 
 const LandlordProperties = () => {
-    const { properties } = useProperties();
+    const { properties, loading } = useProperties();
     const { user } = useAuth();
     const [searchTerm, setSearchTerm] = useState('');
 
@@ -55,7 +55,9 @@ const LandlordProperties = () => {
 
             {/* Property List */}
             <div className="grid grid-cols-1 gap-8">
-                {filteredProperties.length > 0 ? filteredProperties.map(property => (
+                {loading ? (
+                    <div className="py-20 text-center text-gray-400 font-bold uppercase tracking-widest animate-pulse">Synchronizing Asset Network...</div>
+                ) : filteredProperties.length > 0 ? filteredProperties.map(property => (
                     <div
                         key={property.id}
                         className="group bg-white rounded-[3rem] border border-gray-100 shadow-xl shadow-gray-200/20 overflow-hidden hover:shadow-2xl hover:border-teal-100 transition-all duration-500 flex flex-col lg:flex-row"

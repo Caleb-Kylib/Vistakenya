@@ -5,7 +5,7 @@ import { useAuth } from '../../context/AuthContext';
 
 const LandlordApplications = () => {
     const { user } = useAuth();
-    const { applications, updateApplicationStatus } = useApplications();
+    const { applications, updateApplicationStatus, loading } = useApplications();
     const [filter, setFilter] = useState('All');
     const [searchTerm, setSearchTerm] = useState('');
     const [showVerifiedOnly, setShowVerifiedOnly] = useState(false);
@@ -96,7 +96,9 @@ const LandlordApplications = () => {
 
             {/* Applications Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
-                {filteredApplications.map((app) => (
+                {loading ? (
+                    <div className="col-span-full py-20 text-center text-gray-400 font-bold uppercase tracking-widest animate-pulse">Retrieving Network Applications...</div>
+                ) : filteredApplications.map((app) => (
                     <div key={app.id} className="space-y-4">
                         <div className="flex items-center justify-between px-2">
                             <div className="flex items-center gap-2">

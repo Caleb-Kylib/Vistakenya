@@ -54,7 +54,7 @@ const AddProperty = () => {
         setImages(prev => prev.filter((_, i) => i !== index));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         const propertyData = {
@@ -65,9 +65,13 @@ const AddProperty = () => {
             category: formData.type
         };
 
-        addProperty(propertyData);
-        alert('Property listing submitted! It will be visible to tenants once approved by the admin.');
-        navigate('/landlord/properties');
+        const result = await addProperty(propertyData);
+        if (result) {
+            alert('Property listing submitted! It will be visible to tenants once approved by the admin.');
+            navigate('/landlord/properties');
+        } else {
+            alert('Failed to submit property. Please try again.');
+        }
     };
 
     return (

@@ -1,5 +1,5 @@
 import React from 'react';
-import { MapPin, Wifi, Tv, Coffee, Wind, Heart, Star, ShieldCheck, Plus } from 'lucide-react';
+import { MapPin, Wifi, Tv, Coffee, Wind, Heart, Star, ShieldCheck, Plus, View } from 'lucide-react';
 import { useProperties } from '../context/PropertyContext';
 import { Link } from 'react-router-dom';
 
@@ -53,10 +53,14 @@ export default function FeaturedProperties() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent group-hover:from-black/40 transition-all"></div>
 
-                <div className="absolute top-4 left-4">
+                <div className="absolute top-4 left-4 flex flex-col gap-2">
                   <div className="px-3 py-1.5 bg-white/90 backdrop-blur-md rounded-xl text-[9px] font-black text-teal-600 uppercase tracking-widest flex items-center gap-1.5 shadow-lg border border-teal-50">
                     <ShieldCheck className="w-3 h-3" />
                     Verified
+                  </div>
+                  <div className="px-3 py-1.5 bg-gray-900/80 backdrop-blur-md rounded-xl text-[9px] font-black text-white uppercase tracking-widest flex items-center gap-1.5 shadow-lg border border-white/10">
+                    <View size={10} className="text-teal-400" />
+                    360 Tour
                   </div>
                 </div>
 

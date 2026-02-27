@@ -4,6 +4,7 @@ import { Search, MapPin, LogIn } from 'lucide-react';
 import GlassNavbar from '../components/GlassNavbar';
 import Footer from '../components/Footer';
 import FeaturedProperties from '../components/FeaturedProperties';
+import VirtualTour from '../components/VirtualTour';
 import WhyChooseUs from '../components/WhyChooseUs';
 import HowItWorksSection from '../components/HowItWorksSection';
 import Testimonials from '../components/Testimonials';
@@ -102,6 +103,9 @@ export default function LandingPage() {
 
       {/* Featured Properties */}
       <FeaturedProperties />
+
+      {/* Virtual Tours */}
+      <VirtualTour />
 
       {/* Why Choose Us */}
       <WhyChooseUs />
