@@ -1,0 +1,26 @@
+[
+    {
+        "id": 1,
+        "name": "Super Admin",
+        "email": "admin@vista.com",
+        "password": "password123",
+        "role": "admin",
+        "verified": true
+    },
+    {
+        "id": 2,
+        "name": "Samuel Maina",
+        "email": "samuel@vista.com",
+        "password": "password123",
+        "role": "landlord",
+        "verified": true
+    },
+    {
+        "id": 3,
+        "name": "Sarah Atieno",
+        "email": "sarah@vista.com",
+        "password": "password123",
+        "role": "tenant",
+        "verified": false
+    }
+]
