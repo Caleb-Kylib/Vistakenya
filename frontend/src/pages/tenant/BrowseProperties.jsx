@@ -1,21 +1,52 @@
 import React, { useState } from 'react';
-import { Search, MapPin, Bed, Bath, Plus, Filter, SlidersHorizontal, ArrowRight, ShieldCheck, Star } from 'lucide-react';
+import { Search, MapPin, Bed, Bath, Plus, Filter, SlidersHorizontal, ArrowRight, ShieldCheck, Star, Calendar, Clock, X, Info } from 'lucide-react';
 import { useProperties } from '../../context/PropertyContext';
 import { useApplications } from '../../context/ApplicationContext';
+import { useVisits } from '../../context/VisitContext';
 import { useAuth } from '../../context/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
 
 const BrowseProperties = () => {
     const { properties } = useProperties();
     const { addApplication } = useApplications();
+    const { bookVisit } = useVisits();
     const { user } = useAuth();
     const navigate = useNavigate();
     const [searchTerm, setSearchTerm] = useState('');
+    const [selectedForVisit, setSelectedForVisit] = useState(null);
+    const [visitData, setVisitData] = useState({
+        date: '',
+        time: '',
+        phone: '',
+        guests: '1',
+        notes: ''
+    });
+    const [showNewOnly, setShowNewOnly] = useState(false);
 
     // Only show verified properties to tenants
     const verifiedProperties = properties.filter(p => p.status === 'Verified');
 
-    const filtered = verifiedProperties.filter(p =>
+    const isPropertyNew = (property) => {
+        const createdAt = property.created_at || property.createdAt;
+        if (!createdAt) return false;
+
+        const created = new Date(createdAt);
+        if (Number.isNaN(created.getTime())) return false;
+
+        const diffDays = (Date.now() - created.getTime()) / (1000 * 60 * 60 * 24);
+        return diffDays <= 14;
+    };
+
+    const sortedVerified = [...verifiedProperties].sort((a, b) => {
+        const aTime = new Date(a.created_at || a.createdAt || 0).getTime();
+        const bTime = new Date(b.created_at || b.createdAt || 0).getTime();
+        return bTime - aTime;
+    });
+
+    const newlyListed = sortedVerified.filter(isPropertyNew);
+    const sourceList = showNewOnly ? newlyListed : sortedVerified;
+
+    const filtered = sourceList.filter(p =>
         p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         p.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
         p.city.toLowerCase().includes(searchTerm.toLowerCase())
@@ -56,6 +87,38 @@ const BrowseProperties = () => {
         }
     };
 
+    const handleBookVisit = async (e) => {
+        e.preventDefault();
+        if (!user) {
+            alert('Please login to book a visit');
+            navigate('/login');
+            return;
+        }
+
+        const visitPayload = {
+            property_id: selectedForVisit.id,
+            property_name: selectedForVisit.name,
+            landlord: selectedForVisit.owner,
+            tenant_id: user.id,
+            tenant_name: user.name,
+            visit_date: visitData.date,
+            visit_time: visitData.time,
+            phone: visitData.phone,
+            guests: parseInt(visitData.guests),
+            notes: visitData.notes,
+            status: 'Pending'
+        };
+
+        const success = await bookVisit(visitPayload);
+        if (success) {
+            alert('Site visit request sent! The landlord will contact you soon.');
+            setSelectedForVisit(null);
+            setVisitData({ date: '', time: '', phone: '', guests: '1', notes: '' });
+        } else {
+            alert('Failed to book visit. Please try again.');
+        }
+    };
+
     return (
         <div className="max-w-7xl mx-auto space-y-12 pb-24">
             {/* Header & Search */}
@@ -91,6 +154,32 @@ const BrowseProperties = () => {
                     </button>
                 </div>
             </div>
+            
+            {/* View toggles */}
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div className="inline-flex items-center bg-gray-100 rounded-full p-1">
+                    <button
+                        type="button"
+                        onClick={() => setShowNewOnly(false)}
+                        className={`px-4 py-2 text-xs font-black uppercase tracking-widest rounded-full transition-all ${!showNewOnly ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-400'}`}
+                    >
+                        All Verified
+                    </button>
+                    <button
+                        type="button"
+                        onClick={() => setShowNewOnly(true)}
+                        className={`px-4 py-2 text-xs font-black uppercase tracking-widest rounded-full transition-all flex items-center gap-1 ${showNewOnly ? 'bg-white text-teal-700 shadow-sm' : 'text-gray-400'}`}
+                    >
+                        <Clock className="w-3 h-3" />
+                        Newly Listed
+                    </button>
+                </div>
+                <p className="text-[11px] text-gray-400 font-medium uppercase tracking-[0.2em]">
+                    {showNewOnly
+                        ? 'Showing assets listed in the last 14 days'
+                        : 'Showing full verified network supply'}
+                </p>
+            </div>
 
             {/* Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
@@ -106,6 +195,11 @@ const BrowseProperties = () => {
                                     <Star className="w-3 h-3 text-yellow-400 fill-yellow-400" />
                                     4.8
                                 </span>
+                                {isPropertyNew(property) && (
+                                    <span className="px-4 py-2 bg-teal-500/95 backdrop-blur-md rounded-xl text-[10px] font-black text-white uppercase tracking-widest shadow-lg border border-teal-300/70">
+                                        Newly Listed
+                                    </span>
+                                )}
                             </div>
                         </div>
 
@@ -144,13 +238,17 @@ const BrowseProperties = () => {
                                 </div>
                             </div>
 
-                            <div className="flex items-center gap-4">
-                                <button className="flex-1 px-8 py-4 bg-gray-50 text-gray-400 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-teal-50 hover:text-teal-600 transition-all border border-transparent hover:border-teal-100">
-                                    Quick View
+                            <div className="flex flex-col gap-4">
+                                <button
+                                    onClick={() => setSelectedForVisit(property)}
+                                    className="w-full px-8 py-4 bg-gray-50 text-gray-900 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-teal-50 hover:text-teal-600 transition-all border border-transparent hover:border-teal-100 flex items-center justify-center gap-2"
+                                >
+                                    <Calendar className="w-4 h-4" />
+                                    Book Site Visit
                                 </button>
                                 <button
                                     onClick={() => handleApply(property)}
-                                    className="flex-1 px-8 py-4 bg-teal-600 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-lg shadow-teal-100 hover:bg-teal-700 hover:-translate-y-1 transition-all flex items-center justify-center gap-2 group/btn"
+                                    className="w-full px-8 py-4 bg-teal-600 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-lg shadow-teal-100 hover:bg-teal-700 hover:-translate-y-1 transition-all flex items-center justify-center gap-2 group/btn"
                                 >
                                     Reserve Asset
                                     <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-1 transition-transform" />
@@ -168,6 +266,122 @@ const BrowseProperties = () => {
                     </div>
                 )}
             </div>
+
+            {/* Visit Booking Modal */}
+            {selectedForVisit && (
+                <div className="fixed inset-0 z-[100] bg-gray-900/60 backdrop-blur-sm flex items-center justify-center p-6">
+                    <div className="bg-white rounded-[3rem] w-full max-w-2xl overflow-hidden shadow-2xl relative animate-in fade-in zoom-in duration-300">
+                        <button
+                            onClick={() => setSelectedForVisit(null)}
+                            className="absolute top-8 right-8 p-3 bg-gray-50 rounded-2xl text-gray-400 hover:bg-red-50 hover:text-red-500 transition-all z-10"
+                        >
+                            <X className="w-6 h-6" />
+                        </button>
+
+                        <div className="grid grid-cols-1 md:grid-cols-5 h-full">
+                            <div className="md:col-span-2 hidden md:block">
+                                <img src={selectedForVisit.image} className="w-full h-full object-cover" alt="" />
+                            </div>
+                            <div className="md:col-span-3 p-10">
+                                <div className="mb-8">
+                                    <div className="flex items-center gap-2 text-teal-600 font-black text-[10px] uppercase tracking-widest mb-2">
+                                        <Calendar className="w-4 h-4" />
+                                        Visit Reservation
+                                    </div>
+                                    <h3 className="text-3xl font-black text-gray-900 tracking-tighter uppercase mb-2">{selectedForVisit.name}</h3>
+                                    <p className="text-gray-400 font-bold flex items-center gap-2 text-xs uppercase tracking-widest">
+                                        <MapPin className="w-4 h-4 text-teal-500" />
+                                        {selectedForVisit.location}
+                                    </p>
+                                </div>
+
+                                <form onSubmit={handleBookVisit} className="space-y-6">
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <div className="space-y-2">
+                                            <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Preferred Date</label>
+                                            <div className="relative">
+                                                <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-teal-500" />
+                                                <input
+                                                    required
+                                                    type="date"
+                                                    className="w-full pl-12 pr-4 py-4 bg-gray-50 border-none rounded-2xl text-xs font-bold focus:ring-2 focus:ring-teal-500/10 transition-all"
+                                                    value={visitData.date}
+                                                    onChange={(e) => setVisitData({ ...visitData, date: e.target.value })}
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="space-y-2">
+                                            <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Preferred Time</label>
+                                            <div className="relative">
+                                                <Clock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-teal-500" />
+                                                <input
+                                                    required
+                                                    type="time"
+                                                    className="w-full pl-12 pr-4 py-4 bg-gray-50 border-none rounded-2xl text-xs font-bold focus:ring-2 focus:ring-teal-500/10 transition-all"
+                                                    value={visitData.time}
+                                                    onChange={(e) => setVisitData({ ...visitData, time: e.target.value })}
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <div className="space-y-2">
+                                            <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Phone Number</label>
+                                            <input
+                                                required
+                                                type="tel"
+                                                placeholder="+254..."
+                                                className="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl text-xs font-bold focus:ring-2 focus:ring-teal-500/10 transition-all"
+                                                value={visitData.phone}
+                                                onChange={(e) => setVisitData({ ...visitData, phone: e.target.value })}
+                                            />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">No. of People</label>
+                                            <select
+                                                className="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl text-xs font-bold focus:ring-2 focus:ring-teal-500/10 transition-all appearance-none"
+                                                value={visitData.guests}
+                                                onChange={(e) => setVisitData({ ...visitData, guests: e.target.value })}
+                                            >
+                                                <option value="1">1 Person</option>
+                                                <option value="2">2 People</option>
+                                                <option value="3">3 People</option>
+                                                <option value="4+">4+ People</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Additional Notes</label>
+                                        <textarea
+                                            rows="3"
+                                            placeholder="Tell the landlord what you're specifically looking for..."
+                                            className="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl text-xs font-bold focus:ring-2 focus:ring-teal-500/10 transition-all resize-none"
+                                            value={visitData.notes}
+                                            onChange={(e) => setVisitData({ ...visitData, notes: e.target.value })}
+                                        ></textarea>
+                                    </div>
+
+                                    <div className="flex items-start gap-3 p-4 bg-orange-50 rounded-2xl border border-orange-100 mb-2">
+                                        <Info className="w-5 h-5 text-orange-500 flex-shrink-0 mt-0.5" />
+                                        <p className="text-[10px] font-bold text-orange-700 leading-relaxed uppercase">
+                                            This request will be sent to the provisioner. You will be notified once they confirm your preferred slot.
+                                        </p>
+                                    </div>
+
+                                    <button
+                                        type="submit"
+                                        className="w-full py-5 bg-teal-600 text-white rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-xl shadow-teal-100 hover:bg-teal-700 transition-all active:scale-[0.98]"
+                                    >
+                                        Confirm Visit Request
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { AuthProvider } from './context/AuthContext';
 import { PropertyProvider } from './context/PropertyContext';
 import { ApplicationProvider } from './context/ApplicationContext';
+import { VisitProvider } from './context/VisitContext';
 import DashboardLayout from './layouts/DashboardLayout';
 
 // Auth Pages
@@ -43,51 +44,53 @@ function App() {
     <AuthProvider>
       <PropertyProvider>
         <ApplicationProvider>
-          <Router>
-            <Routes>
-              {/* Public Routes */}
-              <Route path="/" element={<LandingPage />} />
-              <Route path="/properties" element={<PropertiesPage />} />
-              <Route path="/about" element={<AboutPage />} />
-              <Route path="/contact" element={<ContactPage />} />
-              <Route path="/how-it-works" element={<HowItWorksPage />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<Signup />} />
-              <Route path="/get-started" element={<Signup />} />
+          <VisitProvider>
+            <Router>
+              <Routes>
+                {/* Public Routes */}
+                <Route path="/" element={<LandingPage />} />
+                <Route path="/properties" element={<PropertiesPage />} />
+                <Route path="/about" element={<AboutPage />} />
+                <Route path="/contact" element={<ContactPage />} />
+                <Route path="/how-it-works" element={<HowItWorksPage />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/signup" element={<Signup />} />
+                <Route path="/get-started" element={<Signup />} />
 
-              {/* Tenant Routes */}
-              <Route element={<DashboardLayout />}>
-                <Route path="/tenant/dashboard" element={<TenantDashboard />} />
-                <Route path="/tenant/browse" element={<BrowseProperties />} />
-                <Route path="/tenant/applications" element={<TenantApplications />} />
-                <Route path="/tenant/leases" element={<TenantLeases />} />
-                <Route path="/tenant/leases/:id" element={<LeaseDetail />} />
-                <Route path="/tenant/payments" element={<TenantPayments />} />
-                <Route path="/tenant/verification" element={<TenantVerification />} />
-              </Route>
+                {/* Tenant Routes */}
+                <Route element={<DashboardLayout />}>
+                  <Route path="/tenant/dashboard" element={<TenantDashboard />} />
+                  <Route path="/tenant/browse" element={<BrowseProperties />} />
+                  <Route path="/tenant/applications" element={<TenantApplications />} />
+                  <Route path="/tenant/leases" element={<TenantLeases />} />
+                  <Route path="/tenant/leases/:id" element={<LeaseDetail />} />
+                  <Route path="/tenant/payments" element={<TenantPayments />} />
+                  <Route path="/tenant/verification" element={<TenantVerification />} />
+                </Route>
 
-              {/* Landlord Routes */}
-              <Route element={<DashboardLayout />}>
-                <Route path="/landlord/dashboard" element={<LandlordDashboard />} />
-                <Route path="/landlord/properties" element={<LandlordProperties />} />
-                <Route path="/landlord/add-property" element={<AddProperty />} />
-                <Route path="/landlord/applications" element={<LandlordApplications />} />
-                <Route path="/landlord/leases" element={<LandlordLeases />} />
-              </Route>
+                {/* Landlord Routes */}
+                <Route element={<DashboardLayout />}>
+                  <Route path="/landlord/dashboard" element={<LandlordDashboard />} />
+                  <Route path="/landlord/properties" element={<LandlordProperties />} />
+                  <Route path="/landlord/add-property" element={<AddProperty />} />
+                  <Route path="/landlord/applications" element={<LandlordApplications />} />
+                  <Route path="/landlord/leases" element={<LandlordLeases />} />
+                </Route>
 
-              {/* Admin Routes */}
-              <Route element={<DashboardLayout />}>
-                <Route path="/admin/dashboard" element={<AdminDashboard />} />
-                <Route path="/admin/landlords" element={<ManageLandlords />} />
-                <Route path="/admin/tenants" element={<VerifyTenants />} />
-                <Route path="/admin/properties" element={<SystemProperties />} />
-                <Route path="/admin/stats" element={<SystemStats />} />
-              </Route>
+                {/* Admin Routes */}
+                <Route element={<DashboardLayout />}>
+                  <Route path="/admin/dashboard" element={<AdminDashboard />} />
+                  <Route path="/admin/landlords" element={<ManageLandlords />} />
+                  <Route path="/admin/tenants" element={<VerifyTenants />} />
+                  <Route path="/admin/properties" element={<SystemProperties />} />
+                  <Route path="/admin/stats" element={<SystemStats />} />
+                </Route>
 
-              {/* 404 Redirect */}
-              <Route path="*" element={<Navigate to="/" />} />
-            </Routes>
-          </Router>
+                {/* 404 Redirect */}
+                <Route path="*" element={<Navigate to="/" />} />
+              </Routes>
+            </Router>
+          </VisitProvider>
         </ApplicationProvider>
       </PropertyProvider>
     </AuthProvider>
