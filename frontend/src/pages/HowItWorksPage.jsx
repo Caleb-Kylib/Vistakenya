@@ -7,49 +7,49 @@ export default function HowItWorksPage() {
   const steps = [
     {
       icon: Search,
-      title: 'Search & Browse',
-      description: 'Explore thousands of verified properties across Nairobi. Filter by location, price, amenities, and more to narrow down your options.',
+      title: 'Campus-Focused Search',
+      description: 'Find housing near your specific university. Filter by distance to campus and your monthly budget (KES 8k - 18k).',
       details: [
-        'Browse verified listings with detailed photos',
-        'Read genuine reviews from past tenants',
-        'Check amenities and neighborhood info',
-        'Save your favorites for later',
+        'Filter by university (MMU, JKUAT, USIU, etc.)',
+        'Check walking distance to lecture halls',
+        'Filter by bedsitter or shared units',
+        'Save top hostels to your wishlist',
       ],
       step: '01',
     },
     {
       icon: CheckCircle,
-      title: 'Compare & Choose',
-      description: 'Use our advanced filtering system to compare properties side-by-side. Check prices, amenities, ratings, and reviews to find your perfect match.',
+      title: 'Private or Co-living',
+      description: 'Choose between your own private studio or a shared co-living space with fellow students to save costs.',
       details: [
-        'Compare up to 5 properties at once',
-        'View detailed floor plans',
-        'Check neighborhood safety ratings',
-        'Read tenant experiences',
+        'Book a private bedsitter or 1BR',
+        'Join a co-living slot in a shared house',
+        'See roommate profiles and trust scores',
+        'Lower your rent by sharing utilities',
       ],
       step: '02',
     },
     {
       icon: FileText,
-      title: 'Apply & Verify',
-      description: 'Complete our simple application form and get verified. We verify your identity, employment, and credit history to ensure trust.',
+      title: 'Student ID Verification',
+      description: 'Upload your Student ID or Admission letter. We verify every tenant to maintain a safe and academic environment.',
       details: [
-        'Complete tenant profile and background check',
-        'Upload required documents (ID, proof of income)',
-        'Get verified badge once approved',
-        'Receive personalized recommendations',
+        'Fast verification using campus credentials',
+        'Criminal record check for all tenants',
+        'Verified badge for your profile',
+        'Seamless online lease signing',
       ],
       step: '03',
     },
     {
       icon: Home,
-      title: 'Move & Enjoy',
-      description: 'Get approval from the landlord, finalize contracts, arrange payment, and get your keys. Move into your new home with complete peace of mind.',
+      title: 'Flexible Rent Payments',
+      description: 'Move in and pay your rent on your own terms. We support weekly and monthly payments via M-Pesa.',
       details: [
-        'Review and sign lease agreement',
-        'Make secure payment via Mpesa or card',
-        'Receive move-in instructions',
-        'Get 24/7 support after moving',
+        'Pay rent via M-Pesa or USSD (*384#)',
+        'Choose weekly payment schedules',
+        'Automatic rent receipts and history',
+        '24/7 student support desk',
       ],
       step: '04',
     },
@@ -57,28 +57,28 @@ export default function HowItWorksPage() {
 
   const faqs = [
     {
-      q: 'How long does the verification process take?',
-      a: 'Our verification process typically takes 2-3 business days. You can start browsing properties while your application is being processed.',
+      q: 'Do I need a student ID to book?',
+      a: 'Yes, Vistakenya is a student-first platform. We require a valid Student ID or Admission Letter to verify your identity and maintain a safe community.',
     },
     {
-      q: 'What documents do I need to provide?',
-      a: 'You\'ll need a valid ID, proof of income (pay slip or bank statement), and possibly a reference from your current landlord.',
+      q: 'How does Co-living work?',
+      a: 'In co-living, you book a "slot" in a shared apartment. You\'ll have your own bed and shared access to common areas like the kitchen and living room.',
     },
     {
-      q: 'Can I apply for multiple properties?',
-      a: 'Yes! You can apply for multiple properties at the same time. Once verified, you\'ll receive personalized recommendations.',
+      q: 'Can I pay rent weekly?',
+      a: 'Absolutely! We understand student budgets. You can opt for weekly rent payments through our flexible payment dashboard.',
     },
     {
-      q: 'What if my application is rejected?',
-      a: 'If rejected, we\'ll let you know why and provide guidance on how to improve your application. You can reapply after 30 days.',
+      q: 'How do I book via USSD?',
+      a: 'Simply dial *384# on your Safaricom line. You can search for hostels, view prices, and book a physical viewing without needing data.',
     },
     {
-      q: 'How are payments secured?',
-      a: 'All payments are processed through encrypted channels. Funds are held in escrow until you confirm receipt of keys.',
+      q: 'Is my deposit safe?',
+      a: 'Yes. All deposits are held in a secure escrow account and only released to the landlord once you verify the property condition during move-in.',
     },
     {
-      q: 'What if there\'s an issue with the property?',
-      a: 'We have a dedicated support team available 24/7 to help resolve any concerns. We\'ll mediate between you and the landlord.',
+      q: 'What if I need to find a roommate?',
+      a: 'Our platform has a built-in roommate matching feature. You can browse other students looking for rooms and connect with them based on shared interests.',
     },
   ];
 
@@ -112,11 +112,11 @@ export default function HowItWorksPage() {
       {/* Hero Section */}
       <div className="pt-32 pb-12 px-6 bg-gradient-to-b from-teal-50 to-white">
         <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
-            How It Works
+          <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 uppercase tracking-tighter font-black">
+            How <span className="text-teal-600">It Works</span>
           </h1>
-          <p className="text-2xl text-gray-600 leading-relaxed">
-            Finding your perfect apartment has never been easier. Follow our simple process.
+          <p className="text-2xl text-gray-600 leading-relaxed font-medium">
+            Finding your hostel or student bedsitter is now a 4-step breeze.
           </p>
         </div>
       </div>

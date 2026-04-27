@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
 import { useAuth } from '../context/AuthContext';
 import { cn } from '../utils/cn';
+import USSDSimulator from '../components/USSDSimulator';
 
 const DashboardLayout = () => {
     const { user, loading } = useAuth();
@@ -30,6 +31,9 @@ const DashboardLayout = () => {
                     <Outlet />
                 </div>
             </main>
+            
+            {/* Global USSD Simulator for Demo */}
+            <USSDSimulator />
         </div>
     );
 };

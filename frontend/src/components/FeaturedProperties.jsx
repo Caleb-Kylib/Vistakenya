@@ -27,13 +27,13 @@ export default function FeaturedProperties() {
         <div className="text-center mb-20 relative">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-teal-50 text-teal-700 text-[10px] font-black uppercase tracking-[0.2em] mb-6 shadow-sm border border-teal-100/50">
             <Star className="w-3.5 h-3.5 fill-teal-500" />
-            Curated Network Inventory
+            Top Student Picks
           </div>
           <h2 className="text-5xl md:text-6xl font-black text-gray-900 mb-6 tracking-tighter uppercase">
-            Premium Short Stays
+            Affordable Housing
           </h2>
           <p className="text-xl text-gray-400 max-w-2xl mx-auto font-medium leading-relaxed">
-            Discover our hand-picked selection of the most secure and high-performance apartments in the city.
+            Discover verified hostels and bedsitters near your university campus. Trusted by students across Nairobi.
           </p>
         </div>
 
@@ -41,7 +41,7 @@ export default function FeaturedProperties() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {featured.map((property) => (
             <div
-              key={property.id}
+              key={property.id || property._id}
               className="group bg-white rounded-[2.5rem] border border-gray-100 shadow-xl shadow-gray-200/20 overflow-hidden hover:shadow-2xl hover:border-teal-100 transition-all duration-500 flex flex-col h-full"
             >
               {/* Image Container */}
@@ -58,10 +58,16 @@ export default function FeaturedProperties() {
                     <ShieldCheck className="w-3 h-3" />
                     Verified
                   </div>
-                  <div className="px-3 py-1.5 bg-gray-900/80 backdrop-blur-md rounded-xl text-[9px] font-black text-white uppercase tracking-widest flex items-center gap-1.5 shadow-lg border border-white/10">
-                    <View size={10} className="text-teal-400" />
-                    360 Tour
-                  </div>
+                  {property.isShared && (
+                    <div className="px-3 py-1.5 bg-coral-500/90 backdrop-blur-md rounded-xl text-[9px] font-black text-white uppercase tracking-widest flex items-center gap-1.5 shadow-lg border border-white/10">
+                      Co-living
+                    </div>
+                  )}
+                  {property.distanceToCampus < 1.5 && (
+                    <div className="px-3 py-1.5 bg-gray-900/80 backdrop-blur-md rounded-xl text-[9px] font-black text-white uppercase tracking-widest flex items-center gap-1.5 shadow-lg border border-white/10">
+                      Near Campus
+                    </div>
+                  )}
                 </div>
 
                 <button className="absolute top-4 right-4 p-2.5 rounded-xl bg-white/90 backdrop-blur-md hover:bg-white transition-all shadow-lg text-gray-400 hover:text-red-500 border border-gray-100/50">
@@ -76,7 +82,7 @@ export default function FeaturedProperties() {
                     <p className="text-[10px] font-black text-teal-400 uppercase tracking-[0.15em]">{property.category}</p>
                     <div className="flex items-center gap-1">
                       <Star size={10} className="fill-yellow-400 text-yellow-400" />
-                      <span className="text-[10px] font-black text-gray-900">4.9</span>
+                      <span className="text-[10px] font-black text-gray-900">{property.trustScore || '4.9'}</span>
                     </div>
                   </div>
 
@@ -84,10 +90,16 @@ export default function FeaturedProperties() {
                     {property.name}
                   </h3>
 
-                  <div className="flex items-center text-gray-400 text-[10px] font-bold uppercase tracking-widest gap-1.5 mb-6">
+                  <div className="flex items-center text-gray-400 text-[10px] font-bold uppercase tracking-widest gap-1.5 mb-2">
                     <MapPin size={12} className="text-teal-500" />
                     {property.location}
                   </div>
+                  
+                  {property.universityNearby && (
+                    <div className="flex items-center text-teal-600 text-[10px] font-black uppercase tracking-widest gap-1.5 mb-6">
+                      🎓 {property.universityNearby} ({property.distanceToCampus}km)
+                    </div>
+                  )}
 
                   <div className="flex flex-wrap gap-2 mb-8">
                     {property.amenities?.slice(0, 3).map((amenity, idx) => (
@@ -99,20 +111,17 @@ export default function FeaturedProperties() {
                         {amenity}
                       </span>
                     ))}
-                    {property.amenities?.length > 3 && (
-                      <span className="text-[9px] font-black text-gray-300 uppercase py-1.5">+{property.amenities.length - 3}</span>
-                    )}
                   </div>
                 </div>
 
                 <div className="pt-6 border-t border-gray-50 flex items-center justify-between">
                   <div>
-                    <p className="text-[9px] font-black text-gray-300 uppercase tracking-widest mb-1 leading-none">Yield/Mo</p>
+                    <p className="text-[9px] font-black text-gray-300 uppercase tracking-widest mb-1 leading-none">Rent/{property.rentType === 'weekly' ? 'Week' : 'Mo'}</p>
                     <p className="text-xl font-black text-teal-600 tracking-tighter uppercase leading-none">
                       KES {property.rent?.toLocaleString()}
                     </p>
                   </div>
-                  <Link to="/tenant/browse" className="p-3 bg-teal-50 group-hover:bg-teal-600 rounded-xl transition-all shadow-sm">
+                  <Link to={`/properties/${property._id || property.id}`} className="p-3 bg-teal-50 group-hover:bg-teal-600 rounded-xl transition-all shadow-sm">
                     <Plus className="w-5 h-5 text-teal-600 group-hover:text-white transition-all group-hover:rotate-90 duration-300" />
                   </Link>
                 </div>
@@ -124,7 +133,7 @@ export default function FeaturedProperties() {
         {/* CTA Button */}
         <div className="text-center mt-20">
           <Link to="/properties" className="inline-flex items-center gap-3 px-10 py-5 rounded-2xl text-xs font-black text-white bg-gray-900 hover:bg-teal-600 transition-all duration-500 shadow-2xl hover:shadow-teal-100 hover:-translate-y-1 uppercase tracking-widest group">
-            Discover All Assets
+            View All Hostels
             <Plus className="w-4 h-4 group-hover:rotate-90 transition-transform duration-300" />
           </Link>
         </div>

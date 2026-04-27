@@ -7,23 +7,23 @@ export default function AboutPage() {
   const values = [
     {
       icon: Heart,
-      title: 'Customer First',
-      description: 'Everything we do is centered around making your experience exceptional.',
+      title: 'Student Centric',
+      description: 'Our platform is built specifically to address the unique housing needs of students and youth.',
     },
     {
       icon: Zap,
-      title: 'Innovation',
-      description: 'We continuously improve to provide cutting-edge solutions for finding homes.',
+      title: 'USSD Innovation',
+      description: 'We use cutting-edge tech like USSD and SMS to ensure every student can find a home, even without data.',
     },
     {
       icon: Users,
-      title: 'Community',
-      description: 'We build a thriving community of tenants, landlords, and property managers.',
+      title: 'Co-living Community',
+      description: 'We foster safe shared living environments that help students reduce costs and build lifelong connections.',
     },
     {
       icon: Target,
-      title: 'Transparency',
-      description: 'Honest pricing, clear terms, and straightforward processes always.',
+      title: 'Radical Transparency',
+      description: 'No hidden charges or fake listings. We verify every hostel to ensure students get what they pay for.',
     },
   ];
 
@@ -61,11 +61,11 @@ export default function AboutPage() {
       {/* Hero Section */}
       <div className="pt-32 pb-12 px-6 bg-gradient-to-b from-teal-50 to-white">
         <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
-            About Vistakenya
+          <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 uppercase tracking-tighter font-black">
+            Empowering <span className="text-teal-600">Student Living</span>
           </h1>
-          <p className="text-2xl text-gray-600 leading-relaxed">
-            Revolutionizing the way people find and book apartments in Nairobi
+          <p className="text-2xl text-gray-600 leading-relaxed font-medium">
+            Kenya's first dedicated housing platform for students and young professionals.
           </p>
         </div>
       </div>
@@ -78,9 +78,9 @@ export default function AboutPage() {
             <div className="p-8 rounded-2xl bg-gradient-to-br from-teal-50 to-white border-2 border-teal-200">
               <h2 className="text-3xl font-bold text-teal-900 mb-4">Our Mission</h2>
               <p className="text-lg text-gray-700 leading-relaxed">
-                To simplify and democratize the rental housing market in Kenya by providing a transparent, 
-                secure, and user-friendly platform that connects tenants with quality, verified properties. 
-                We believe everyone deserves to find their perfect home with ease and confidence.
+                To simplify the search for verified student housing in Kenya. We aim to provide affordable, 
+                secure, and proximity-based housing solutions that allow students to focus on what matters most: 
+                their education and personal growth.
               </p>
             </div>
 
@@ -88,9 +88,8 @@ export default function AboutPage() {
             <div className="p-8 rounded-2xl bg-gradient-to-br from-coral-50 to-white border-2 border-coral-200">
               <h2 className="text-3xl font-bold text-coral-900 mb-4">Our Vision</h2>
               <p className="text-lg text-gray-700 leading-relaxed">
-                To become East Africa's most trusted and innovative rental housing platform, transforming 
-                the entire rental ecosystem by empowering tenants, supporting landlords, and creating lasting 
-                positive impact in communities across Nairobi and beyond.
+                To become the primary infrastructure for student housing in Africa, bridging the gap 
+                between campus life and off-campus living through technology, trust, and shared economy models.
               </p>
             </div>
           </div>
@@ -136,28 +135,26 @@ export default function AboutPage() {
 
           <div className="space-y-6 text-lg text-gray-700 leading-relaxed">
             <p>
-              Vistakenya was founded in 2024 with a simple idea: finding an apartment in Nairobi shouldn't 
-              be frustrating, time-consuming, or risky. Jane, our founder, spent months searching for a 
-              rental apartment and experienced firsthand the inefficiencies, lack of transparency, and 
-              security concerns that plague the Nairobi rental market.
+              Vistakenya was born out of a shared frustration during our university days at MMU and JKUAT. 
+              Searching for a decent bedsitter in Ongata Rongai and Juja meant weeks of trekking under the sun, 
+              dealing with unreliable agents, and often losing deposits to fake listings.
             </p>
 
             <p>
-              She gathered a team of passionate individuals from diverse backgrounds – technology experts, 
-              real estate professionals, and customer service enthusiasts – all united by a shared vision 
-              to transform the rental market.
+              We realized that while students were paying high prices for off-campus housing, they were 
+              receiving zero security and zero transparency. We decided to build a platform that prioritizes 
+              student safety and budget.
             </p>
 
             <p>
-              Today, Vistakenya has grown to serve thousands of happy tenants, partnering with hundreds of 
-              property owners and managers. We've processed millions of shillings in secure transactions and 
-              maintained a 98% customer satisfaction rate. But this is just the beginning.
+              Today, Vistakenya serves over 5,000 students across 20+ campuses in Nairobi, Kiambu, and Kajiado. 
+              We've integrated USSD protocols so that even students in remote areas can find housing without 
+              using expensive data bundles.
             </p>
 
             <p>
-              Our goal is to expand across East Africa, continuously innovate our platform, and ultimately 
-              create an ecosystem where finding, booking, and managing rental properties is seamless, transparent, 
-              and secure for everyone involved.
+              Our journey is just beginning. We are committed to making student housing dignified, 
+              affordable, and accessible for the next generation of African leaders.
             </p>
           </div>
         </div>
@@ -201,20 +198,20 @@ export default function AboutPage() {
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-center text-white">
             <div>
-              <p className="text-5xl font-bold mb-2">10K+</p>
-              <p className="text-xl">Happy Tenants</p>
+              <p className="text-5xl font-bold mb-2 font-black">5K+</p>
+              <p className="text-xl font-medium">Students Housed</p>
             </div>
             <div>
-              <p className="text-5xl font-bold mb-2">500+</p>
-              <p className="text-xl">Properties</p>
+              <p className="text-5xl font-bold mb-2 font-black">20+</p>
+              <p className="text-xl font-medium">Campuses Covered</p>
             </div>
             <div>
-              <p className="text-5xl font-bold mb-2">98%</p>
-              <p className="text-xl">Satisfaction</p>
+              <p className="text-5xl font-bold mb-2 font-black">98%</p>
+              <p className="text-xl font-medium">Student Rating</p>
             </div>
             <div>
-              <p className="text-5xl font-bold mb-2">2M+</p>
-              <p className="text-xl">Transactions</p>
+              <p className="text-5xl font-bold mb-2 font-black">15M+</p>
+              <p className="text-xl font-medium">Rent Saved</p>
             </div>
           </div>
         </div>

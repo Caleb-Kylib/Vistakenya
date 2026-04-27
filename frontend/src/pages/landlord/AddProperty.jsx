@@ -12,26 +12,30 @@ const AddProperty = () => {
     const [images, setImages] = useState([]);
     const [formData, setFormData] = useState({
         name: '',
-        type: 'Apartment',
+        type: 'Hostel',
         location: '',
         city: 'Nairobi',
         rent: '',
         deposit: '',
-        bedrooms: '1',
-        bathrooms: '1',
+        universityNearby: '',
+        distanceToCampus: '',
+        isShared: false,
         description: '',
         amenities: [],
     });
 
     const amenitiesList = [
-        'Water (24/7)', 'Backup Generator', 'High-speed Wi-Fi', 'Gym',
-        'Swimming Pool', 'Security Guard', 'CCTV', 'Borehole',
-        'Balcony', 'Parking space', 'Elevator', 'Electric Fence'
+        'Water (24/7)', 'High-speed Wi-Fi', 'Study Area', 'Security Guard',
+        'CCTV', 'Borehole', 'Shared Kitchen', 'Electric Fence',
+        'Laundry Area', 'Token Electricity', 'Campus Shuttle'
     ];
 
     const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFormData(prev => ({ ...prev, [name]: value }));
+        const { name, value, type, checked } = e.target;
+        setFormData(prev => ({ 
+            ...prev, 
+            [name]: type === 'checkbox' ? checked : value 
+        }));
     };
 
     const toggleAmenity = (amenity) => {
@@ -45,7 +49,6 @@ const AddProperty = () => {
 
     const handleImageChange = (e) => {
         const files = Array.from(e.target.files);
-        // In a real app, you'd upload to a CDN. Here we use object URLs for demo.
         const newImages = files.map(file => URL.createObjectURL(file));
         setImages(prev => [...prev, ...newImages].slice(0, 10));
     };
@@ -57,17 +60,23 @@ const AddProperty = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        if (parseInt(formData.rent) > 18000) {
+            alert('To maintain affordability on our platform, student listings are capped at KES 18,000.');
+            return;
+        }
+
         const propertyData = {
             ...formData,
             image: images[0] || 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=800&q=80',
             owner: user?.name || 'Landlord',
             verified: false,
-            category: formData.type
+            category: formData.type,
+            trustScore: 85
         };
 
         const result = await addProperty(propertyData);
         if (result) {
-            alert('Property listing submitted! It will be visible to tenants once approved by the admin.');
+            alert('Property listing submitted! It will be visible to students once approved by the admin.');
             navigate('/landlord/properties');
         } else {
             alert('Failed to submit property. Please try again.');
@@ -84,8 +93,8 @@ const AddProperty = () => {
                     <Trash2 className="w-5 h-5 text-gray-500 rotate-45" />
                 </button>
                 <div>
-                    <h1 className="text-4xl font-black text-gray-900 tracking-tight">List New Property</h1>
-                    <p className="text-gray-500 font-medium">Provide accurate details to attract quality tenants faster.</p>
+                    <h1 className="text-4xl font-black text-gray-900 tracking-tight uppercase">List New Hostel</h1>
+                    <p className="text-gray-500 font-medium">Add your property to Kenya's largest student housing network.</p>
                 </div>
             </div>
 
@@ -96,8 +105,8 @@ const AddProperty = () => {
                         <div className="p-2.5 bg-teal-50 rounded-xl">
                             <Camera className="w-5 h-5 text-teal-600" />
                         </div>
-                        <h2 className="text-xl font-black text-gray-900 tracking-tight">Property Images</h2>
-                        <span className="ml-auto text-[10px] font-black text-gray-400 uppercase tracking-widest">Min 1 image required for demo</span>
+                        <h2 className="text-xl font-black text-gray-900 tracking-tight uppercase">Hostel Gallery</h2>
+                        <span className="ml-auto text-[10px] font-black text-gray-400 uppercase tracking-widest">Min 1 photo required</span>
                     </div>
 
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -124,85 +133,81 @@ const AddProperty = () => {
                     </div>
                 </div>
 
-                {/* Basic Information */}
+                {/* Student & Campus Info */}
                 <div className="bg-white rounded-[2.5rem] p-10 shadow-xl shadow-gray-200/40 border border-gray-100">
                     <div className="flex items-center gap-2 mb-8">
                         <div className="p-2.5 bg-teal-50 rounded-xl">
                             <Building className="w-5 h-5 text-teal-600" />
                         </div>
-                        <h2 className="text-xl font-black text-gray-900 tracking-tight">Basic Information</h2>
+                        <h2 className="text-xl font-black text-gray-900 tracking-tight uppercase">Campus Proximity</h2>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div className="space-y-2">
+                            <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Nearest University</label>
+                            <input
+                                name="universityNearby"
+                                value={formData.universityNearby}
+                                onChange={handleInputChange}
+                                placeholder="e.g. Multimedia University (MMU)"
+                                className="w-full px-5 py-4 bg-gray-50 border-none rounded-2xl font-bold focus:ring-2 focus:ring-teal-500/20 transition-all"
+                                required
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Distance to Campus (KM)</label>
+                            <input
+                                name="distanceToCampus"
+                                type="number"
+                                step="0.1"
+                                value={formData.distanceToCampus}
+                                onChange={handleInputChange}
+                                placeholder="e.g. 0.8"
+                                className="w-full px-5 py-4 bg-gray-50 border-none rounded-2xl font-bold focus:ring-2 focus:ring-teal-500/20 transition-all"
+                                required
+                            />
+                        </div>
                         <div className="space-y-2">
                             <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Property Name</label>
                             <input
                                 name="name"
                                 value={formData.name}
                                 onChange={handleInputChange}
-                                placeholder="e.g. Lavender Heights"
+                                placeholder="e.g. Elite Student Suites"
                                 className="w-full px-5 py-4 bg-gray-50 border-none rounded-2xl font-bold focus:ring-2 focus:ring-teal-500/20 transition-all"
                                 required
                             />
                         </div>
                         <div className="space-y-2">
-                            <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Property Type</label>
+                            <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Housing Category</label>
                             <select
                                 name="type"
                                 className="w-full px-5 py-4 bg-gray-50 border-none rounded-2xl font-bold focus:ring-2 focus:ring-teal-500/20 transition-all"
                                 value={formData.type}
                                 onChange={handleInputChange}
                             >
-                                <option>Apartment</option>
+                                <option>Hostel</option>
                                 <option>Bedsitter</option>
-                                <option>One Bedroom</option>
-                                <option>Two Bedroom</option>
+                                <option>Shared Apartment</option>
                                 <option>Studio</option>
-                                <option>Townhouse</option>
-                                <option>Mansionette</option>
-                            </select>
-                        </div>
-                        <div className="space-y-2">
-                            <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Location Area</label>
-                            <input
-                                name="location"
-                                value={formData.location}
-                                onChange={handleInputChange}
-                                placeholder="e.g. Kilimani, along Dennis Pritt"
-                                className="w-full px-5 py-4 bg-gray-50 border-none rounded-2xl font-bold focus:ring-2 focus:ring-teal-500/20 transition-all"
-                                required
-                            />
-                        </div>
-                        <div className="space-y-2">
-                            <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">City</label>
-                            <select
-                                name="city"
-                                className="w-full px-5 py-4 bg-gray-50 border-none rounded-2xl font-bold focus:ring-2 focus:ring-teal-500/20 transition-all"
-                                value={formData.city}
-                                onChange={handleInputChange}
-                            >
-                                <option>Nairobi</option>
-                                <option>Mombasa</option>
-                                <option>Kisumu</option>
-                                <option>Nakuru</option>
-                                <option>Eldoret</option>
+                                <option>One Bedroom</option>
                             </select>
                         </div>
                     </div>
                 </div>
 
-                {/* Pricing & Specs */}
+                {/* Pricing & Shared Housing */}
                 <div className="bg-white rounded-[2.5rem] p-10 shadow-xl shadow-gray-200/40 border border-gray-100">
                     <div className="flex items-center gap-2 mb-8">
                         <div className="p-2.5 bg-teal-50 rounded-xl">
                             <DollarSign className="w-5 h-5 text-teal-600" />
                         </div>
-                        <h2 className="text-xl font-black text-gray-900 tracking-tight">Pricing & Specifications</h2>
+                        <h2 className="text-xl font-black text-gray-900 tracking-tight uppercase">Rent & Slots</h2>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div className="space-y-2">
-                            <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Monthly Rent</label>
+                            <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Monthly Rent (Capped at 18k)</label>
                             <div className="relative">
                                 <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[10px] font-black text-gray-300">KES</span>
                                 <input
@@ -211,54 +216,24 @@ const AddProperty = () => {
                                     value={formData.rent}
                                     onChange={handleInputChange}
                                     className="w-full pl-12 pr-5 py-4 bg-gray-50 border-none rounded-2xl font-bold focus:ring-2 focus:ring-teal-500/20 transition-all"
-                                    placeholder="45,000"
+                                    placeholder="12,000"
+                                    max="18000"
                                     required
                                 />
                             </div>
                         </div>
-                        <div className="space-y-2">
-                            <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Deposit</label>
-                            <div className="relative">
-                                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[10px] font-black text-gray-300">KES</span>
-                                <input
-                                    name="deposit"
-                                    type="number"
-                                    value={formData.deposit}
+                        <div className="flex items-center gap-4 pt-6">
+                            <label className="relative inline-flex items-center cursor-pointer">
+                                <input 
+                                    type="checkbox" 
+                                    name="isShared"
+                                    checked={formData.isShared}
                                     onChange={handleInputChange}
-                                    className="w-full pl-12 pr-5 py-4 bg-gray-50 border-none rounded-2xl font-bold focus:ring-2 focus:ring-teal-500/20 transition-all"
-                                    placeholder="45,000"
-                                    required
+                                    className="sr-only peer" 
                                 />
-                            </div>
-                        </div>
-                        <div className="space-y-2">
-                            <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Bedrooms</label>
-                            <select
-                                name="bedrooms"
-                                className="w-full px-5 py-4 bg-gray-50 border-none rounded-2xl font-bold focus:ring-2 focus:ring-teal-500/20 transition-all"
-                                value={formData.bedrooms}
-                                onChange={handleInputChange}
-                            >
-                                <option>Studio</option>
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4+</option>
-                            </select>
-                        </div>
-                        <div className="space-y-2">
-                            <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Bathrooms</label>
-                            <select
-                                name="bathrooms"
-                                className="w-full px-5 py-4 bg-gray-50 border-none rounded-2xl font-bold focus:ring-2 focus:ring-teal-500/20 transition-all"
-                                value={formData.bathrooms}
-                                onChange={handleInputChange}
-                            >
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4+</option>
-                            </select>
+                                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-teal-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-teal-600"></div>
+                                <span className="ml-3 text-xs font-black text-gray-400 uppercase tracking-widest">Enable Co-living / Sharing</span>
+                            </label>
                         </div>
                     </div>
                 </div>

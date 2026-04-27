@@ -8,6 +8,7 @@ import VirtualTour from '../components/VirtualTour';
 import WhyChooseUs from '../components/WhyChooseUs';
 import HowItWorksSection from '../components/HowItWorksSection';
 import Testimonials from '../components/Testimonials';
+import USSDSimulator from '../components/USSDSimulator';
 
 export default function LandingPage() {
   const [searchArea, setSearchArea] = React.useState('');
@@ -30,18 +31,18 @@ export default function LandingPage() {
             {/* Badge */}
             <div className="inline-block mb-6">
               <span className="inline-block px-4 py-2 rounded-full bg-gradient-to-r from-teal-100 to-coral-50 text-teal-700 text-sm font-semibold border border-teal-200/50">
-                🏡 Welcome to Your Perfect Home
+                🎓 Affordable Housing for the Next Generation
               </span>
             </div>
 
             {/* Main Headline */}
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-6 leading-tight">
-              Find Your Perfect <span className="bg-gradient-to-r from-teal-600 to-teal-800 bg-clip-text text-transparent">Apartment</span> in Nairobi
+              Find Affordable <span className="bg-gradient-to-r from-teal-600 to-teal-800 bg-clip-text text-transparent">Student Housing</span> Near Campus
             </h1>
 
             {/* Subheadline */}
             <p className="text-xl md:text-2xl text-gray-600 mb-10 max-w-2xl mx-auto leading-relaxed">
-              Discover verified, affordable furnished apartments with seamless booking. Your ideal home is just a search away.
+              Verified bedsitters, studios, and co-living spaces for students and young professionals. Starting from KES 8,000.
             </p>
 
             {/* Search Bar */}
@@ -51,7 +52,7 @@ export default function LandingPage() {
                   <MapPin size={20} className="text-teal-600" />
                   <input
                     type="text"
-                    placeholder="Search by area (e.g., Westlands, Kilimani...)"
+                    placeholder="Search by campus area (e.g., Rongai, Juja, Kasarani...)"
                     value={searchArea}
                     onChange={(e) => setSearchArea(e.target.value)}
                     className="w-full outline-none text-gray-700 placeholder-gray-400 bg-transparent"
@@ -66,7 +67,7 @@ export default function LandingPage() {
                 </Link>
               </div>
               <p className="text-gray-500 text-sm mt-3">
-                Popular areas: Westlands • Kilimani • Upper Hill • Parklands • Nairobi
+                Popular areas: Ongata Rongai • Juja • Kasarani • Madaraka • Nairobi
               </p>
             </div>
 
@@ -76,13 +77,13 @@ export default function LandingPage() {
                 to="/properties"
                 className="px-8 py-4 rounded-lg text-lg font-semibold text-white bg-gradient-to-r from-teal-600 to-teal-700 hover:from-teal-700 hover:to-teal-800 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
               >
-                Browse Properties
+                Browse Hostels
               </Link>
               <Link
                 to="/how-it-works"
                 className="px-8 py-4 rounded-lg text-lg font-semibold text-teal-600 bg-white border-2 border-teal-600 hover:bg-teal-50 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
               >
-                Learn How It Works
+                How It Works
               </Link>
             </div>
           </div>
@@ -91,8 +92,8 @@ export default function LandingPage() {
           <div className="mt-12 relative">
             <div className="rounded-3xl overflow-hidden shadow-2xl border border-gray-200">
               <img
-                src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=1200&h=600&fit=crop"
-                alt="Beautiful apartment"
+                src="https://images.unsplash.com/photo-1555854817-5b2247a8175f?w=1200&h=600&fit=crop"
+                alt="Student roommate studying"
                 className="w-full h-auto object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
@@ -120,10 +121,10 @@ export default function LandingPage() {
       <section className="py-20 px-6 bg-gradient-to-r from-teal-600 via-teal-500 to-teal-600">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-            Ready to Find Your Home?
+            Ready to Find Your Student Home?
           </h2>
           <p className="text-xl text-teal-50 mb-8 leading-relaxed">
-            Join thousands of happy tenants. Browse our verified properties, compare prices, and move into your perfect apartment today.
+            Join thousands of students finding affordable, verified housing near campus. Browse hostels, compare prices, and move in today.
           </p>
           <div className="flex flex-col md:flex-row gap-4 justify-center">
             <Link
@@ -143,8 +144,11 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Footer */}
+      {/* Footer Component */}
       <Footer />
+
+      {/* Global USSD Simulator for Demo */}
+      <USSDSimulator />
     </div>
   );
 }

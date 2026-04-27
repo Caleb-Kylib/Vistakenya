@@ -126,11 +126,11 @@ const BrowseProperties = () => {
                 <div className="space-y-4">
                     <div className="inline-flex items-center gap-2 px-4 py-2 bg-teal-50 text-teal-600 rounded-full text-xs font-black uppercase tracking-widest border border-teal-100/50">
                         <ShieldCheck className="w-4 h-4" />
-                        Verified Network Inventory
+                        Student Housing Network
                     </div>
-                    <h1 className="text-5xl font-black text-gray-900 tracking-tight uppercase tracking-tighter">Listed Properties</h1>
+                    <h1 className="text-5xl font-black text-gray-900 tracking-tight uppercase tracking-tighter">Available Hostels</h1>
                     <p className="text-gray-400 font-medium text-lg max-w-xl leading-relaxed">
-                        Every listing in our network is audited for quality and security. Find your next high-performance home today.
+                        Verified bedsitters, studios, and co-living slots near your campus. Budget friendly and safe.
                     </p>
                 </div>
             </div>
@@ -142,7 +142,7 @@ const BrowseProperties = () => {
                         <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                         <input
                             type="text"
-                            placeholder="Search by city, neighborhood or building name..."
+                            placeholder="Search by campus area (e.g. Rongai, Juja, Kasarani...)"
                             className="w-full pl-16 pr-8 py-5 bg-gray-50 border-none rounded-[1.5rem] font-bold text-gray-800 placeholder:text-gray-400 focus:ring-2 focus:ring-teal-500/10 transition-all text-lg"
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
@@ -150,7 +150,7 @@ const BrowseProperties = () => {
                     </div>
                     <button className="w-full md:w-auto px-10 py-5 bg-gray-900 text-white rounded-[1.5rem] font-black uppercase tracking-widest text-xs flex items-center justify-center gap-3 hover:bg-teal-600 transition-all shadow-xl">
                         <SlidersHorizontal className="w-4 h-4" />
-                        Advanced Filters
+                        Student Filters
                     </button>
                 </div>
             </div>
@@ -163,7 +163,7 @@ const BrowseProperties = () => {
                         onClick={() => setShowNewOnly(false)}
                         className={`px-4 py-2 text-xs font-black uppercase tracking-widest rounded-full transition-all ${!showNewOnly ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-400'}`}
                     >
-                        All Verified
+                        All Hostels
                     </button>
                     <button
                         type="button"
@@ -171,13 +171,13 @@ const BrowseProperties = () => {
                         className={`px-4 py-2 text-xs font-black uppercase tracking-widest rounded-full transition-all flex items-center gap-1 ${showNewOnly ? 'bg-white text-teal-700 shadow-sm' : 'text-gray-400'}`}
                     >
                         <Clock className="w-3 h-3" />
-                        Newly Listed
+                        Near Campus
                     </button>
                 </div>
                 <p className="text-[11px] text-gray-400 font-medium uppercase tracking-[0.2em]">
                     {showNewOnly
-                        ? 'Showing assets listed in the last 14 days'
-                        : 'Showing full verified network supply'}
+                        ? 'Showing listings within 1.5km of campus'
+                        : 'Showing all verified student housing'}
                 </p>
             </div>
 
@@ -191,15 +191,15 @@ const BrowseProperties = () => {
                                 <span className="px-4 py-2 bg-white/95 backdrop-blur-md rounded-xl text-[10px] font-black text-teal-600 uppercase tracking-widest border border-teal-100 shadow-lg">
                                     {property.category}
                                 </span>
-                                <span className="px-4 py-2 bg-gray-900/90 backdrop-blur-md rounded-xl text-[10px] font-black text-white uppercase tracking-widest border border-white/10 shadow-lg flex items-center gap-2">
-                                    <Star className="w-3 h-3 text-yellow-400 fill-yellow-400" />
-                                    4.8
-                                </span>
-                                {isPropertyNew(property) && (
-                                    <span className="px-4 py-2 bg-teal-500/95 backdrop-blur-md rounded-xl text-[10px] font-black text-white uppercase tracking-widest shadow-lg border border-teal-300/70">
-                                        Newly Listed
+                                {property.isShared && (
+                                    <span className="px-4 py-2 bg-orange-500 text-white rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg border border-orange-400">
+                                        Co-living
                                     </span>
                                 )}
+                                <span className="px-4 py-2 bg-gray-900/90 backdrop-blur-md rounded-xl text-[10px] font-black text-white uppercase tracking-widest border border-white/10 shadow-lg flex items-center gap-2">
+                                    <Star className="w-3 h-3 text-yellow-400 fill-yellow-400" />
+                                    {property.trustScore || '92'}% Trust
+                                </span>
                             </div>
                         </div>
 
@@ -210,7 +210,7 @@ const BrowseProperties = () => {
                                         <h3 className="text-2xl font-black text-gray-900 uppercase tracking-tighter group-hover:text-teal-600 transition-colors">{property.name}</h3>
                                         <p className="text-gray-400 font-bold flex items-center gap-2 mt-2 text-xs uppercase tracking-widest">
                                             <MapPin className="w-4 h-4 text-teal-500" />
-                                            {property.location}, {property.city}
+                                            {property.location}
                                         </p>
                                     </div>
                                     <p className="text-2xl font-black text-teal-600 uppercase tracking-tighter">KES {property.rent?.toLocaleString()}</p>
@@ -219,20 +219,20 @@ const BrowseProperties = () => {
                                 <div className="flex items-center gap-8 py-8 border-y border-gray-50 my-8">
                                     <div className="flex items-center gap-3">
                                         <div className="w-10 h-10 rounded-2xl bg-teal-50 flex items-center justify-center">
-                                            <Bed className="w-5 h-5 text-teal-600" />
+                                            <span className="text-xl">🎓</span>
                                         </div>
                                         <div>
-                                            <p className="text-[9px] font-black text-gray-300 uppercase tracking-widest">Bedrooms</p>
-                                            <p className="text-sm font-black text-gray-700">{property.bedrooms || '2'}</p>
+                                            <p className="text-[9px] font-black text-gray-300 uppercase tracking-widest">Nearby</p>
+                                            <p className="text-sm font-black text-gray-700">{property.universityNearby || 'MMU/JKUAT'}</p>
                                         </div>
                                     </div>
                                     <div className="flex items-center gap-3">
                                         <div className="w-10 h-10 rounded-2xl bg-teal-50 flex items-center justify-center">
-                                            <Bath className="w-5 h-5 text-teal-600" />
+                                            <span className="text-xl">📍</span>
                                         </div>
                                         <div>
-                                            <p className="text-[9px] font-black text-gray-300 uppercase tracking-widest">Bathrooms</p>
-                                            <p className="text-sm font-black text-gray-700">{property.bathrooms || '2'}</p>
+                                            <p className="text-[9px] font-black text-gray-300 uppercase tracking-widest">Distance</p>
+                                            <p className="text-sm font-black text-gray-700">{property.distanceToCampus || '0.8'} KM</p>
                                         </div>
                                     </div>
                                 </div>
@@ -244,13 +244,13 @@ const BrowseProperties = () => {
                                     className="w-full px-8 py-4 bg-gray-50 text-gray-900 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-teal-50 hover:text-teal-600 transition-all border border-transparent hover:border-teal-100 flex items-center justify-center gap-2"
                                 >
                                     <Calendar className="w-4 h-4" />
-                                    Book Site Visit
+                                    Book Viewing
                                 </button>
                                 <button
                                     onClick={() => handleApply(property)}
                                     className="w-full px-8 py-4 bg-teal-600 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-lg shadow-teal-100 hover:bg-teal-700 hover:-translate-y-1 transition-all flex items-center justify-center gap-2 group/btn"
                                 >
-                                    Reserve Asset
+                                    Reserve Hostel/Slot
                                     <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-1 transition-transform" />
                                 </button>
                             </div>

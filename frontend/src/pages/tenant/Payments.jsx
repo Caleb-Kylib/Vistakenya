@@ -51,6 +51,7 @@ const TenantPayments = () => {
             </div>
 
             {/* Quick Stats Dashboard */}
+            {/* Quick Stats Dashboard */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div className="p-8 bg-teal-600 rounded-[2.5rem] text-white shadow-2xl shadow-teal-100 flex flex-col justify-between h-48">
                     <div className="flex items-center justify-between">
@@ -58,34 +59,72 @@ const TenantPayments = () => {
                         <CreditCard className="w-5 h-5 opacity-50" />
                     </div>
                     <div>
-                        <p className="text-4xl font-black">KES 185,000</p>
-                        <p className="text-xs font-bold mt-2 opacity-80">Accumulated since Dec 2023</p>
+                        <p className="text-4xl font-black">KES 42,000</p>
+                        <p className="text-xs font-bold mt-2 opacity-80">Accumulated since April 2026</p>
                     </div>
                 </div>
 
                 <div className="p-8 bg-white border border-gray-100 rounded-[2.5rem] shadow-sm flex flex-col justify-between h-48 animate-fadeIn">
                     <div className="flex items-center justify-between">
-                        <p className="text-[10px] text-gray-400 font-black uppercase tracking-widest">Rent Due</p>
-                        <DollarSign className="w-5 h-5 text-coral-500" />
+                        <p className="text-[10px] text-gray-400 font-black uppercase tracking-widest">Next Weekly Installment</p>
+                        <DollarSign className="w-5 h-5 text-orange-500" />
                     </div>
                     <div>
-                        <p className="text-4xl font-black text-gray-900">KES 0</p>
+                        <p className="text-4xl font-black text-gray-900">KES 3,500</p>
                         <div className="flex items-center gap-2 mt-2">
-                            <span className="w-2 h-2 rounded-full bg-teal-500" />
-                            <p className="text-xs font-bold text-teal-600 uppercase tracking-widest">All Clear</p>
+                            <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
+                            <p className="text-xs font-bold text-orange-600 uppercase tracking-widest">Due in 2 days</p>
                         </div>
                     </div>
                 </div>
 
                 <div className="p-8 bg-gray-900 rounded-[2.5rem] text-white shadow-2xl shadow-gray-200 flex flex-col justify-between h-48">
                     <div className="flex items-center justify-between">
-                        <p className="text-[10px] font-black uppercase tracking-widest opacity-80">Rent Completed</p>
+                        <p className="text-[10px] font-black uppercase tracking-widest opacity-80">Payment Plan</p>
                         <Calendar className="w-5 h-5 opacity-50" />
                     </div>
                     <div>
-                        <p className="text-4xl font-black">3 Months</p>
-                        <p className="text-xs font-bold mt-2 text-teal-400 uppercase tracking-widest">Consistent Payer</p>
+                        <p className="text-3xl font-black">Weekly Flex</p>
+                        <p className="text-xs font-bold mt-2 text-teal-400 uppercase tracking-widest">Saves 10% interest</p>
                     </div>
+                </div>
+            </div>
+
+            {/* Flexible Payment Action Area */}
+            <div className="bg-white rounded-[2.5rem] border border-gray-100 shadow-xl p-10 flex flex-col lg:flex-row items-center gap-10">
+                <div className="flex-1 space-y-6">
+                    <div className="space-y-2">
+                        <h2 className="text-2xl font-black text-gray-900 uppercase tracking-tighter">Flexible Payment Plan</h2>
+                        <p className="text-gray-400 font-medium">Adjust your payment schedule to match your budget.</p>
+                    </div>
+                    
+                    <div className="flex items-center gap-4 p-2 bg-gray-50 rounded-2xl w-fit">
+                        <button className="px-6 py-3 bg-white shadow-sm rounded-xl text-xs font-black uppercase tracking-widest text-teal-600">Weekly</button>
+                        <button className="px-6 py-3 text-xs font-black uppercase tracking-widest text-gray-400 hover:text-gray-600">Monthly</button>
+                    </div>
+
+                    <div className="space-y-4">
+                        <div className="flex justify-between items-center">
+                            <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Partial Payment Amount</label>
+                            <span className="text-sm font-black text-teal-600">KES 3,500</span>
+                        </div>
+                        <input type="range" className="w-full h-2 bg-gray-100 rounded-lg appearance-none cursor-pointer accent-teal-600" min="1000" max="14000" step="500" />
+                        <div className="flex justify-between text-[10px] font-black text-gray-300 uppercase tracking-widest">
+                            <span>KES 1,000 (Min)</span>
+                            <span>KES 14,000 (Full Month)</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div className="w-full lg:w-80 p-8 bg-gray-50 rounded-[2rem] border border-gray-100 space-y-6">
+                    <div className="space-y-1">
+                        <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Current Balance</p>
+                        <p className="text-3xl font-black text-gray-900">KES 3,500</p>
+                    </div>
+                    <button className="w-full py-4 bg-gray-900 text-white rounded-2xl font-black text-xs uppercase tracking-widest shadow-xl hover:bg-teal-600 transition-all">
+                        Pay via M-Pesa
+                    </button>
+                    <p className="text-[10px] text-center text-gray-400 font-medium">Securely processed by VisitaPay</p>
                 </div>
             </div>
 

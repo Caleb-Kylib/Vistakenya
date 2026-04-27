@@ -14,9 +14,15 @@ export const PropertyProvider = ({ children }) => {
             const url = `${API_BASE_URL}/properties${queryParams ? `?${queryParams}` : ''}`;
             const response = await fetch(url);
             const data = await response.json();
-            setProperties(data);
+            if (!response.ok || !Array.isArray(data)) {
+                console.error('Properties API error:', response.status, data);
+                setProperties([]);
+            } else {
+                setProperties(data);
+            }
         } catch (error) {
             console.error('Error fetching properties:', error);
+            setProperties([]);
         } finally {
             setLoading(false);
         }

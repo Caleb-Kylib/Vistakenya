@@ -21,7 +21,7 @@ export default function Footer() {
               </h3>
             </Link>
             <p className="text-gray-400 text-sm leading-relaxed max-w-sm font-medium">
-              Revolutionizing the rental experience in East Africa. We connect verified tenants with premium, high-performance digital assets through seamless blockchain-inspired trust.
+              Empowering the next generation of Kenyan scholars and young professionals with verified, affordable, and accessible housing solutions near major campuses.
             </p>
             {/* Social Links */}
             <div className="flex gap-3">
@@ -42,16 +42,16 @@ export default function Footer() {
             <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-teal-500">Inventory</h4>
             <nav className="flex flex-col gap-4">
               <Link to="/properties" className="text-gray-400 hover:text-white transition-all text-xs font-bold uppercase tracking-widest hover:translate-x-1 inline-block">
-                Luxury Suites
+                Bedsitters
               </Link>
               <Link to="/properties" className="text-gray-400 hover:text-white transition-all text-xs font-bold uppercase tracking-widest hover:translate-x-1 inline-block">
                 Studio Units
               </Link>
               <Link to="/properties" className="text-gray-400 hover:text-white transition-all text-xs font-bold uppercase tracking-widest hover:translate-x-1 inline-block">
-                Short Stays
+                Shared Hostels
               </Link>
               <Link to="/properties" className="text-gray-400 hover:text-white transition-all text-xs font-bold uppercase tracking-widest hover:translate-x-1 inline-block">
-                View Maps
+                Campus Map
               </Link>
             </nav>
           </div>
@@ -64,10 +64,10 @@ export default function Footer() {
                 How It Works
               </Link>
               <Link to="/about" className="text-gray-400 hover:text-white transition-all text-xs font-bold uppercase tracking-widest hover:translate-x-1 inline-block">
-                Our Story
+                Our Mission
               </Link>
               <Link to="/contact" className="text-gray-400 hover:text-white transition-all text-xs font-bold uppercase tracking-widest hover:translate-x-1 inline-block">
-                Partnerships
+                Landlord Portal
               </Link>
               <Link to="/contact" className="text-gray-400 hover:text-white transition-all text-xs font-bold uppercase tracking-widest hover:translate-x-1 inline-block">
                 Support
@@ -89,7 +89,7 @@ export default function Footer() {
                 <div className="w-10 h-10 rounded-xl bg-gray-900 border border-white/5 flex items-center justify-center text-teal-500 group-hover:bg-teal-600 group-hover:text-white transition-all">
                   <Mail size={16} />
                 </div>
-                <p className="text-xs font-black uppercase tracking-widest text-gray-300">HQ@VISTAKENYA.COM</p>
+                <p className="text-xs font-black uppercase tracking-widest text-gray-300">STUDENTS@VISTAKENYA.COM</p>
               </div>
             </div>
             {/* Newsletter Minimal */}
@@ -97,7 +97,7 @@ export default function Footer() {
               <div className="relative group max-w-sm">
                 <input
                   type="email"
-                  placeholder="Drop your email for network updates..."
+                  placeholder="Get housing alerts near your campus..."
                   className="w-full bg-gray-900 border border-white/5 rounded-2xl py-4 pl-6 pr-12 text-xs font-bold placeholder:text-gray-600 focus:outline-none focus:border-teal-500/50 transition-all"
                 />
                 <button className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-teal-600 rounded-xl flex items-center justify-center text-white hover:bg-teal-500 transition-colors">
@@ -111,10 +111,10 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="border-t border-white/5 mx-8 py-10 flex flex-col md:flex-row justify-between items-center gap-6">
           <p className="text-[10px] font-black text-gray-600 uppercase tracking-widest">
-            &copy; 2026 VisitaKenya Network. Built for the future of living.
+            &copy; 2026 VisitaKenya Network. Built for the next generation of scholars.
           </p>
           <div className="flex gap-8">
-            {['Privacy', 'Legal', 'Analytics'].map((link) => (
+            {['Privacy', 'USSD Guide', 'Campus Terms'].map((link) => (
               <a key={link} href="#" className="text-[10px] font-black text-gray-600 uppercase tracking-widest hover:text-teal-500 transition-colors">
                 {link}
               </a>

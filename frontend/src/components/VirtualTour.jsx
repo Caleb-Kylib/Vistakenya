@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Play, Maximize, RotateCcw, X, Info, View } from 'lucide-react';
+import { Play, Maximize, RotateCcw, X, Info, View, MapPin } from 'lucide-react';
 
 const tours = [
     {

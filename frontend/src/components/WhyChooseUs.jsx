@@ -1,5 +1,5 @@
 import React from 'react';
-import { Shield, Zap, Users, TrendingUp, Lock, Clock } from 'lucide-react';
+import { Shield, Zap, Users, TrendingUp, Lock, Clock, MapPin } from 'lucide-react';
 
 export default function WhyChooseUs() {
   const features = [
@@ -41,57 +41,81 @@ export default function WhyChooseUs() {
         {/* Section Header */}
         <div className="text-center mb-16">
           <span className="inline-block px-4 py-2 rounded-full bg-coral-100 text-coral-700 text-sm font-semibold mb-4">
-            💎 Why Tenants Love Us
+            💎 Why Students Love Us
           </span>
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
             Why Choose Vistakenya?
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            We're committed to making your search for the perfect apartment simple, safe, and satisfying
+            We're committed to making your student housing search simple, safe, and affordable.
           </p>
         </div>
 
         {/* Features Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {features.map((feature, idx) => {
-            const Icon = feature.icon;
-            return (
-              <div
-                key={idx}
-                className="group p-8 rounded-2xl border border-gray-200 hover:border-teal-400 bg-white hover:bg-gradient-to-br hover:from-teal-50 hover:to-white transition-all duration-300 shadow-md hover:shadow-xl"
-              >
-                {/* Icon */}
-                <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-gradient-to-br from-teal-100 to-teal-50 group-hover:from-teal-500 group-hover:to-teal-600 transition-all duration-300 mb-4">
-                  <Icon size={24} className="text-teal-600 group-hover:text-white transition-colors duration-300" />
-                </div>
+          <div className="group p-8 rounded-2xl border border-gray-200 hover:border-teal-400 bg-white hover:bg-gradient-to-br hover:from-teal-50 hover:to-white transition-all duration-300 shadow-md hover:shadow-xl">
+            <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-gradient-to-br from-teal-100 to-teal-50 group-hover:from-teal-500 group-hover:to-teal-600 transition-all duration-300 mb-4">
+              <Shield size={24} className="text-teal-600 group-hover:text-white transition-colors duration-300" />
+            </div>
+            <h3 className="text-xl font-bold text-gray-900 mb-2">Verified Hostels</h3>
+            <p className="text-gray-600 leading-relaxed">Every hostel and bedsitter is vetted by our team to ensure your safety and comfort.</p>
+          </div>
 
-                {/* Content */}
-                <h3 className="text-xl font-bold text-gray-900 mb-2">{feature.title}</h3>
-                <p className="text-gray-600 leading-relaxed">{feature.description}</p>
+          <div className="group p-8 rounded-2xl border border-gray-200 hover:border-teal-400 bg-white hover:bg-gradient-to-br hover:from-teal-50 hover:to-white transition-all duration-300 shadow-md hover:shadow-xl">
+            <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-gradient-to-br from-teal-100 to-teal-50 group-hover:from-teal-500 group-hover:to-teal-600 transition-all duration-300 mb-4">
+              <MapPin size={24} className="text-teal-600 group-hover:text-white transition-colors duration-300" />
+            </div>
+            <h3 className="text-xl font-bold text-gray-900 mb-2">Campus Proximity</h3>
+            <p className="text-gray-600 leading-relaxed">Find housing within walking distance to major universities in Nairobi and its outskirts.</p>
+          </div>
 
-                {/* Hover Arrow */}
-                <div className="mt-4 inline-flex items-center text-teal-600 font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  Learn more →
-                </div>
-              </div>
-            );
-          })}
+          <div className="group p-8 rounded-2xl border border-gray-200 hover:border-teal-400 bg-white hover:bg-gradient-to-br hover:from-teal-50 hover:to-white transition-all duration-300 shadow-md hover:shadow-xl">
+            <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-gradient-to-br from-teal-100 to-teal-50 group-hover:from-teal-500 group-hover:to-teal-600 transition-all duration-300 mb-4">
+              <TrendingUp size={24} className="text-teal-600 group-hover:text-white transition-colors duration-300" />
+            </div>
+            <h3 className="text-xl font-bold text-gray-900 mb-2">Flexible Rent</h3>
+            <p className="text-gray-600 leading-relaxed">Choose between weekly or monthly payment models to fit your student budget.</p>
+          </div>
+
+          <div className="group p-8 rounded-2xl border border-gray-200 hover:border-teal-400 bg-white hover:bg-gradient-to-br hover:from-teal-50 hover:to-white transition-all duration-300 shadow-md hover:shadow-xl">
+            <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-gradient-to-br from-teal-100 to-teal-50 group-hover:from-teal-500 group-hover:to-teal-600 transition-all duration-300 mb-4">
+              <Users size={24} className="text-teal-600 group-hover:text-white transition-colors duration-300" />
+            </div>
+            <h3 className="text-xl font-bold text-gray-900 mb-2">Roommate Matching</h3>
+            <p className="text-gray-600 leading-relaxed">Connect with fellow students and find the perfect roommate to share your space and costs.</p>
+          </div>
+
+          <div className="group p-8 rounded-2xl border border-gray-200 hover:border-teal-400 bg-white hover:bg-gradient-to-br hover:from-teal-50 hover:to-white transition-all duration-300 shadow-md hover:shadow-xl">
+            <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-gradient-to-br from-teal-100 to-teal-50 group-hover:from-teal-500 group-hover:to-teal-600 transition-all duration-300 mb-4">
+              <Zap size={24} className="text-teal-600 group-hover:text-white transition-colors duration-300" />
+            </div>
+            <h3 className="text-xl font-bold text-gray-900 mb-2">Offline Search</h3>
+            <p className="text-gray-600 leading-relaxed">No data? No problem. Search for houses and book viewings via our USSD service (*384#).</p>
+          </div>
+
+          <div className="group p-8 rounded-2xl border border-gray-200 hover:border-teal-400 bg-white hover:bg-gradient-to-br hover:from-teal-50 hover:to-white transition-all duration-300 shadow-md hover:shadow-xl">
+            <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-gradient-to-br from-teal-100 to-teal-50 group-hover:from-teal-500 group-hover:to-teal-600 transition-all duration-300 mb-4">
+              <Lock size={24} className="text-teal-600 group-hover:text-white transition-colors duration-300" />
+            </div>
+            <h3 className="text-xl font-bold text-gray-900 mb-2">Secure Payments</h3>
+            <p className="text-gray-600 leading-relaxed">Safely pay your rent through M-Pesa with instant receipts and clear payment history.</p>
+          </div>
         </div>
 
         {/* Trust Section */}
         <div className="mt-20 p-12 rounded-3xl bg-gradient-to-r from-teal-50 via-white to-coral-50 border border-teal-200/50">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
             <div>
-              <p className="text-4xl md:text-5xl font-bold text-teal-600 mb-2">10K+</p>
-              <p className="text-gray-700 font-medium">Happy Tenants</p>
+              <p className="text-4xl md:text-5xl font-bold text-teal-600 mb-2">5K+</p>
+              <p className="text-gray-700 font-medium">Students Housed</p>
             </div>
             <div>
-              <p className="text-4xl md:text-5xl font-bold text-teal-600 mb-2">500+</p>
-              <p className="text-gray-700 font-medium">Properties Listed</p>
+              <p className="text-4xl md:text-5xl font-bold text-teal-600 mb-2">20+</p>
+              <p className="text-gray-700 font-medium">Campuses Covered</p>
             </div>
             <div>
               <p className="text-4xl md:text-5xl font-bold text-teal-600 mb-2">98%</p>
-              <p className="text-gray-700 font-medium">Satisfaction Rate</p>
+              <p className="text-gray-700 font-medium">Student Satisfaction</p>
             </div>
           </div>
         </div>

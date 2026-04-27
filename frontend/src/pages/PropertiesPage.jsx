@@ -6,123 +6,120 @@ import Footer from '../components/Footer';
 export default function PropertiesPage() {
   const [filters, setFilters] = useState({
     area: '',
-    priceRange: [0, 100000],
-    bedrooms: null,
-    bathrooms: null,
+    university: '',
+    isShared: false,
+    priceRange: [0, 20000],
+    category: '',
     amenities: [],
   });
 
   const [showFilters, setShowFilters] = useState(false);
 
-  // Mock data
+  // Updated student-focused mock data
   const allProperties = [
     {
       id: 1,
-      name: 'Westlands Luxury Studio',
-      image: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=500&h=300&fit=crop',
-      price: 45000,
-      area: 'Westlands',
-      bedrooms: 1,
-      bathrooms: 1,
-      amenities: ['WiFi', 'TV', 'Air Conditioning'],
+      name: 'Sunset Hostels (Shared)',
+      image: 'https://images.unsplash.com/photo-1555854817-5b2247a8175f?w=500&h=300&fit=crop',
+      price: 8500,
+      area: 'Ongata Rongai',
+      universityNearby: 'Multimedia University',
+      distanceToCampus: 0.8,
+      isShared: true,
+      category: 'Shared Room',
+      amenities: ['WiFi', 'Water 24/7', 'Security'],
       rating: 4.8,
-      reviews: 24,
+      trustScore: 92,
+      reviews: 45,
     },
     {
       id: 2,
-      name: 'Kilimani Modern Apartment',
-      image: 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=500&h=300&fit=crop',
-      price: 55000,
-      area: 'Kilimani',
-      bedrooms: 2,
-      bathrooms: 2,
-      amenities: ['WiFi', 'Gym Access', 'Security'],
+      name: 'Juja Modern Studios',
+      image: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=500&h=300&fit=crop',
+      price: 12500,
+      area: 'Juja',
+      universityNearby: 'JKUAT',
+      distanceToCampus: 1.2,
+      isShared: false,
+      category: 'Studio',
+      amenities: ['WiFi', 'Electricity', 'Parking'],
       rating: 4.9,
-      reviews: 18,
+      trustScore: 95,
+      reviews: 28,
     },
     {
       id: 3,
-      name: 'Upper Hill Cozy One Bed',
+      name: 'Kasarani Student Heights',
       image: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=500&h=300&fit=crop',
-      price: 38000,
-      area: 'Upper Hill',
-      bedrooms: 1,
-      bathrooms: 1,
-      amenities: ['WiFi', 'Coffee Maker', 'Garden Access'],
+      price: 15000,
+      area: 'Kasarani',
+      universityNearby: 'USIU-Africa / PAC',
+      distanceToCampus: 1.5,
+      isShared: false,
+      category: 'Bedsitter',
+      amenities: ['WiFi', 'CCTV', 'Borehole'],
       rating: 4.7,
+      trustScore: 88,
       reviews: 31,
     },
     {
       id: 4,
-      name: 'Parklands Premium Suite',
-      image: 'https://images.unsplash.com/photo-1571508601571-520fcefe6301?w=500&h=300&fit=crop',
-      price: 62000,
-      area: 'Parklands',
-      bedrooms: 2,
-      bathrooms: 2,
-      amenities: ['WiFi', 'Parking', 'Balcony'],
+      name: 'Madaraka Co-living Space',
+      image: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=500&h=300&fit=crop',
+      price: 9500,
+      area: 'Madaraka',
+      universityNearby: 'Strathmore University',
+      distanceToCampus: 0.5,
+      isShared: true,
+      category: 'Shared Apartment',
+      amenities: ['WiFi', 'Kitchen', 'Security'],
       rating: 4.9,
-      reviews: 42,
+      trustScore: 97,
+      reviews: 52,
     },
     {
       id: 5,
-      name: 'Lavington Bright Apartment',
-      image: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=500&h=300&fit=crop',
-      price: 48000,
-      area: 'Lavington',
-      bedrooms: 2,
-      bathrooms: 1,
-      amenities: ['WiFi', 'Garden', 'Parking'],
-      rating: 4.6,
-      reviews: 15,
+      name: 'Rongai Elite Bedsitters',
+      image: 'https://images.unsplash.com/photo-1494145904049-0dca59b4bbad?w=500&h=300&fit=crop',
+      price: 11000,
+      area: 'Ongata Rongai',
+      universityNearby: 'CUEA / MMU',
+      distanceToCampus: 2.1,
+      isShared: false,
+      category: 'Bedsitter',
+      amenities: ['Water 24/7', 'Electricity'],
+      rating: 4.5,
+      trustScore: 82,
+      reviews: 19,
     },
     {
       id: 6,
-      name: 'Muthaiga Luxury Penthouse',
-      image: 'https://images.unsplash.com/photo-1565183938294-7563f3ce68c5?w=500&h=300&fit=crop',
-      price: 85000,
-      area: 'Muthaiga',
-      bedrooms: 3,
-      bathrooms: 2,
-      amenities: ['WiFi', 'Gym', 'Security', 'Balcony'],
-      rating: 4.95,
-      reviews: 37,
-    },
-    {
-      id: 7,
-      name: 'Embakasi Modern Studio',
-      image: 'https://images.unsplash.com/photo-1494145904049-0dca59b4bbad?w=500&h=300&fit=crop',
-      price: 28000,
-      area: 'Embakasi',
-      bedrooms: 1,
-      bathrooms: 1,
-      amenities: ['WiFi', 'Security'],
-      rating: 4.5,
-      reviews: 22,
-    },
-    {
-      id: 8,
-      name: 'Riverside Contemporary',
+      name: 'Juja Prime Apartments',
       image: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=500&h=300&fit=crop',
-      price: 52000,
-      area: 'Riverside',
-      bedrooms: 2,
-      bathrooms: 2,
-      amenities: ['WiFi', 'Gym Access', 'Parking', 'River View'],
+      price: 18000,
+      area: 'Juja',
+      universityNearby: 'JKUAT',
+      distanceToCampus: 0.9,
+      isShared: false,
+      category: '1 Bedroom',
+      amenities: ['WiFi', 'Gym', 'Parking'],
       rating: 4.8,
-      reviews: 29,
+      trustScore: 90,
+      reviews: 37,
     },
   ];
 
-  const areas = ['Westlands', 'Kilimani', 'Upper Hill', 'Parklands', 'Lavington', 'Muthaiga', 'Embakasi', 'Riverside'];
-  const amenitiesList = ['WiFi', 'TV', 'Air Conditioning', 'Gym Access', 'Security', 'Parking', 'Balcony', 'Garden Access'];
+  const areas = ['Ongata Rongai', 'Juja', 'Kasarani', 'Madaraka', 'Nairobi Central'];
+  const universities = ['Multimedia University', 'JKUAT', 'USIU-Africa', 'Strathmore University', 'KCA University', 'CUEA'];
+  const amenitiesList = ['WiFi', 'Water 24/7', 'Electricity', 'Security', 'CCTV', 'Parking', 'Kitchen', 'Gym'];
 
   // Filter properties
   const filteredProperties = allProperties.filter((property) => {
     if (filters.area && property.area !== filters.area) return false;
+    if (filters.university && !property.universityNearby.includes(filters.university)) return false;
+    if (filters.isShared && !property.isShared) return false;
     if (property.price < filters.priceRange[0] || property.price > filters.priceRange[1]) return false;
-    if (filters.bedrooms && property.bedrooms !== filters.bedrooms) return false;
-    if (filters.bathrooms && property.bathrooms !== filters.bathrooms) return false;
+    if (filters.category && property.category !== filters.category) return false;
     if (
       filters.amenities.length > 0 &&
       !filters.amenities.every((amenity) => property.amenities.includes(amenity))
@@ -144,9 +141,10 @@ export default function PropertiesPage() {
   const resetFilters = () => {
     setFilters({
       area: '',
-      priceRange: [0, 100000],
-      bedrooms: null,
-      bathrooms: null,
+      university: '',
+      isShared: false,
+      priceRange: [0, 20000],
+      category: '',
       amenities: [],
     });
   };
@@ -158,11 +156,11 @@ export default function PropertiesPage() {
       {/* Page Header */}
       <div className="pt-32 pb-12 px-6 bg-gradient-to-b from-teal-50 to-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-2">
-            Browse Properties
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-2 font-black tracking-tight uppercase">
+            Find Student Housing
           </h1>
-          <p className="text-lg text-gray-600">
-            {filteredProperties.length} properties available in Nairobi
+          <p className="text-lg text-gray-600 font-medium">
+            {filteredProperties.length} verified hostels available near major campuses
           </p>
         </div>
       </div>
@@ -193,7 +191,7 @@ export default function PropertiesPage() {
                 {/* Area Dropdown */}
                 <div>
                   <label className="block text-sm font-semibold text-gray-900 mb-3">
-                    Area
+                    Campus Area
                   </label>
                   <select
                     value={filters.area}
@@ -211,17 +209,52 @@ export default function PropertiesPage() {
                   </select>
                 </div>
 
+                {/* University Dropdown */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-900 mb-3">
+                    Nearby University
+                  </label>
+                  <select
+                    value={filters.university}
+                    onChange={(e) =>
+                      setFilters((prev) => ({ ...prev, university: e.target.value }))
+                    }
+                    className="w-full p-3 rounded-lg border border-gray-300 bg-white text-gray-700 outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-200 transition-all"
+                  >
+                    <option value="">All Universities</option>
+                    {universities.map((uni) => (
+                      <option key={uni} value={uni}>
+                        {uni}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Shared Housing Toggle */}
+                <div className="flex items-center space-x-3 p-3 bg-teal-50 rounded-xl border border-teal-100">
+                  <input
+                    type="checkbox"
+                    id="isShared"
+                    checked={filters.isShared}
+                    onChange={(e) => setFilters(prev => ({ ...prev, isShared: e.target.checked }))}
+                    className="w-5 h-5 rounded border-gray-300 text-teal-600 focus:ring-teal-500 cursor-pointer"
+                  />
+                  <label htmlFor="isShared" className="text-sm font-bold text-teal-800 cursor-pointer">
+                    Show Co-living (Shared)
+                  </label>
+                </div>
+
                 {/* Price Range */}
                 <div>
                   <label className="block text-sm font-semibold text-gray-900 mb-3">
-                    Price Range
+                    Monthly Budget (Max)
                   </label>
                   <div className="space-y-2">
                     <input
                       type="range"
-                      min="0"
-                      max="100000"
-                      step="5000"
+                      min="8000"
+                      max="20000"
+                      step="500"
                       value={filters.priceRange[1]}
                       onChange={(e) =>
                         setFilters((prev) => ({
@@ -232,72 +265,18 @@ export default function PropertiesPage() {
                       className="w-full h-2 bg-gray-300 rounded-lg appearance-none cursor-pointer accent-teal-600"
                     />
                     <div className="flex justify-between text-sm text-gray-600">
-                      <span>KES 0</span>
+                      <span>KES 8,000</span>
                       <span>KES {filters.priceRange[1].toLocaleString()}</span>
                     </div>
-                  </div>
-                </div>
-
-                {/* Bedrooms */}
-                <div>
-                  <label className="block text-sm font-semibold text-gray-900 mb-3">
-                    Bedrooms
-                  </label>
-                  <div className="flex gap-2">
-                    {[1, 2, 3, 4].map((num) => (
-                      <button
-                        key={num}
-                        onClick={() =>
-                          setFilters((prev) => ({
-                            ...prev,
-                            bedrooms: prev.bedrooms === num ? null : num,
-                          }))
-                        }
-                        className={`px-4 py-2 rounded-lg font-medium transition-all ${
-                          filters.bedrooms === num
-                            ? 'bg-teal-600 text-white'
-                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                        }`}
-                      >
-                        {num}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Bathrooms */}
-                <div>
-                  <label className="block text-sm font-semibold text-gray-900 mb-3">
-                    Bathrooms
-                  </label>
-                  <div className="flex gap-2">
-                    {[1, 2, 3].map((num) => (
-                      <button
-                        key={num}
-                        onClick={() =>
-                          setFilters((prev) => ({
-                            ...prev,
-                            bathrooms: prev.bathrooms === num ? null : num,
-                          }))
-                        }
-                        className={`px-4 py-2 rounded-lg font-medium transition-all ${
-                          filters.bathrooms === num
-                            ? 'bg-teal-600 text-white'
-                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                        }`}
-                      >
-                        {num}
-                      </button>
-                    ))}
                   </div>
                 </div>
 
                 {/* Amenities */}
                 <div>
                   <label className="block text-sm font-semibold text-gray-900 mb-3">
-                    Amenities
+                    Student Amenities
                   </label>
-                  <div className="space-y-2">
+                  <div className="grid grid-cols-1 gap-2">
                     {amenitiesList.map((amenity) => (
                       <label
                         key={amenity}
@@ -359,7 +338,7 @@ export default function PropertiesPage() {
                 {filteredProperties.map((property) => (
                   <div
                     key={property.id}
-                    className="group rounded-2xl overflow-hidden bg-white shadow-md hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2"
+                    className="group rounded-2xl overflow-hidden bg-white shadow-md hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100"
                   >
                     {/* Image */}
                     <div className="relative h-48 overflow-hidden bg-gray-200">
@@ -368,44 +347,66 @@ export default function PropertiesPage() {
                         alt={property.name}
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                       />
+                      <div className="absolute top-3 left-3 flex flex-col gap-2">
+                        {property.isShared && (
+                          <span className="px-2 py-1 bg-coral-500 text-white text-[10px] font-bold rounded-lg shadow-lg uppercase">
+                            Co-living
+                          </span>
+                        )}
+                        {property.distanceToCampus < 1 && (
+                          <span className="px-2 py-1 bg-teal-600 text-white text-[10px] font-bold rounded-lg shadow-lg uppercase">
+                            Near Campus
+                          </span>
+                        )}
+                      </div>
                       <button className="absolute top-3 right-3 p-2 rounded-full bg-white/90 hover:bg-white transition-all shadow-lg">
-                        <Heart size={18} className="text-coral-500" />
+                        <Heart size={18} className="text-gray-400 hover:text-coral-500 transition-colors" />
                       </button>
                     </div>
 
                     {/* Content */}
                     <div className="p-5">
                       <div className="flex items-center justify-between mb-2">
+                        <span className="text-[10px] font-black text-teal-500 uppercase tracking-widest">
+                          {property.category}
+                        </span>
                         <div className="flex items-center space-x-1">
-                          <span className="text-yellow-400">⭐</span>
-                          <span className="font-semibold text-gray-900">{property.rating}</span>
-                          <span className="text-gray-500 text-sm">({property.reviews})</span>
+                          <span className="text-yellow-400 text-xs">⭐</span>
+                          <span className="font-bold text-gray-900 text-xs">{property.trustScore || '90'}% Trust</span>
                         </div>
                       </div>
 
-                      <h3 className="font-bold text-gray-900 mb-1 text-sm line-clamp-2">
+                      <h3 className="font-bold text-gray-900 mb-1 text-base line-clamp-1 group-hover:text-teal-600 transition-colors">
                         {property.name}
                       </h3>
-                      <div className="flex items-center text-teal-600 text-xs mb-3">
-                        <MapPin size={12} className="mr-1" />
+                      
+                      <div className="flex items-center text-gray-500 text-xs mb-2">
+                        <MapPin size={12} className="mr-1 text-teal-500" />
                         {property.area}
                       </div>
 
-                      <div className="flex gap-3 mb-3 text-xs">
-                        <span className="bg-gray-100 px-2 py-1 rounded">
-                          🛏️ {property.bedrooms}
-                        </span>
-                        <span className="bg-gray-100 px-2 py-1 rounded">
-                          🚿 {property.bathrooms}
-                        </span>
+                      <div className="flex items-center text-teal-700 text-[11px] font-bold mb-4 bg-teal-50 p-2 rounded-lg">
+                        <span className="mr-2">🎓</span>
+                        {property.universityNearby} ({property.distanceToCampus}km)
                       </div>
 
-                      <div className="border-t border-gray-200 pt-3">
-                        <p className="text-2xl font-bold text-teal-600 mb-3">
-                          KES {property.price.toLocaleString()}
-                        </p>
-                        <button className="w-full px-4 py-2 rounded-lg text-sm font-semibold bg-gradient-to-r from-teal-500 to-teal-600 text-white hover:from-teal-600 hover:to-teal-700 transition-all">
-                          View Details
+                      <div className="flex flex-wrap gap-2 mb-4">
+                        {property.amenities.slice(0, 2).map((amenity, i) => (
+                          <span key={i} className="text-[10px] bg-gray-100 text-gray-600 px-2 py-1 rounded-md font-medium">
+                            {amenity}
+                          </span>
+                        ))}
+                      </div>
+
+                      <div className="border-t border-gray-100 pt-4 flex items-center justify-between">
+                        <div>
+                          <p className="text-[10px] text-gray-400 uppercase font-bold tracking-widest mb-1">Monthly Rent</p>
+                          <p className="text-xl font-black text-teal-600">
+                            KES {property.price.toLocaleString()}
+                          </p>
+                        </div>
+                        <button className="px-4 py-2 rounded-xl text-xs font-bold bg-gray-900 text-white hover:bg-teal-600 transition-all shadow-lg">
+                          Details
                         </button>
                       </div>
                     </div>

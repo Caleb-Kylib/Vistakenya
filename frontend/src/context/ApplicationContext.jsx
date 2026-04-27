@@ -12,9 +12,15 @@ export const ApplicationProvider = ({ children }) => {
             setLoading(true);
             const response = await fetch(`${API_BASE_URL}/applications`);
             const data = await response.json();
-            setApplications(data);
+            if (!response.ok || !Array.isArray(data)) {
+                console.error('Applications API error:', response.status, data);
+                setApplications([]);
+            } else {
+                setApplications(data);
+            }
         } catch (error) {
             console.error('Error fetching applications:', error);
+            setApplications([]);
         } finally {
             setLoading(false);
         }
