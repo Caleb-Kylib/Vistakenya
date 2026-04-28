@@ -35,7 +35,7 @@ const Sidebar = ({ isOpen }) => {
     const landlordMenu = [
         { name: 'Alpha Portal', path: '/landlord/dashboard', icon: LayoutDashboard },
         { name: 'Inventory Assets', path: '/landlord/properties', icon: Building },
-        { name: 'List New Asset', path: '/landlord/add-property', icon: PlusCircle },
+        { name: 'Add New Property', path: '/landlord/add-property', icon: PlusCircle },
         { name: 'Tenant Screening', path: '/landlord/applications', icon: ClipboardList },
         { name: 'Lease Archive', path: '/landlord/leases', icon: Home },
     ];

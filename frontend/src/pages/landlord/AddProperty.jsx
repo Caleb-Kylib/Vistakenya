@@ -71,12 +71,13 @@ const AddProperty = () => {
             owner: user?.name || 'Landlord',
             verified: false,
             category: formData.type,
-            trustScore: 85
+            trustScore: 85,
+            created_at: new Date().toISOString()
         };
 
         const result = await addProperty(propertyData);
         if (result) {
-            alert('Property listing submitted! It will be visible to students once approved by the admin.');
+            alert('Property listing submitted successfully! It is now available in listings.');
             navigate('/landlord/properties');
         } else {
             alert('Failed to submit property. Please try again.');

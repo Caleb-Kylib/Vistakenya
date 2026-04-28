@@ -1,11 +1,16 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { MapPin, Heart, Star, Filter, ChevronDown, X } from 'lucide-react';
+import { useSearchParams } from 'react-router-dom';
 import GlassNavbar from '../components/GlassNavbar';
 import Footer from '../components/Footer';
+import { useProperties } from '../context/PropertyContext';
 
 export default function PropertiesPage() {
+  const { properties } = useProperties();
+  const [searchParams] = useSearchParams();
+  const initialArea = searchParams.get('area') || '';
   const [filters, setFilters] = useState({
-    area: '',
+    area: initialArea,
     university: '',
     isShared: false,
     priceRange: [0, 20000],
@@ -15,99 +20,27 @@ export default function PropertiesPage() {
 
   const [showFilters, setShowFilters] = useState(false);
 
-  // Updated student-focused mock data
-  const allProperties = [
-    {
-      id: 1,
-      name: 'Sunset Hostels (Shared)',
-      image: 'https://images.unsplash.com/photo-1555854817-5b2247a8175f?w=500&h=300&fit=crop',
-      price: 8500,
-      area: 'Ongata Rongai',
-      universityNearby: 'Multimedia University',
-      distanceToCampus: 0.8,
-      isShared: true,
-      category: 'Shared Room',
-      amenities: ['WiFi', 'Water 24/7', 'Security'],
-      rating: 4.8,
-      trustScore: 92,
-      reviews: 45,
-    },
-    {
-      id: 2,
-      name: 'Juja Modern Studios',
-      image: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=500&h=300&fit=crop',
-      price: 12500,
-      area: 'Juja',
-      universityNearby: 'JKUAT',
-      distanceToCampus: 1.2,
-      isShared: false,
-      category: 'Studio',
-      amenities: ['WiFi', 'Electricity', 'Parking'],
-      rating: 4.9,
-      trustScore: 95,
-      reviews: 28,
-    },
-    {
-      id: 3,
-      name: 'Kasarani Student Heights',
-      image: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=500&h=300&fit=crop',
-      price: 15000,
-      area: 'Kasarani',
-      universityNearby: 'USIU-Africa / PAC',
-      distanceToCampus: 1.5,
-      isShared: false,
-      category: 'Bedsitter',
-      amenities: ['WiFi', 'CCTV', 'Borehole'],
-      rating: 4.7,
-      trustScore: 88,
-      reviews: 31,
-    },
-    {
-      id: 4,
-      name: 'Madaraka Co-living Space',
-      image: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=500&h=300&fit=crop',
-      price: 9500,
-      area: 'Madaraka',
-      universityNearby: 'Strathmore University',
-      distanceToCampus: 0.5,
-      isShared: true,
-      category: 'Shared Apartment',
-      amenities: ['WiFi', 'Kitchen', 'Security'],
-      rating: 4.9,
-      trustScore: 97,
-      reviews: 52,
-    },
-    {
-      id: 5,
-      name: 'Rongai Elite Bedsitters',
-      image: 'https://images.unsplash.com/photo-1494145904049-0dca59b4bbad?w=500&h=300&fit=crop',
-      price: 11000,
-      area: 'Ongata Rongai',
-      universityNearby: 'CUEA / MMU',
-      distanceToCampus: 2.1,
-      isShared: false,
-      category: 'Bedsitter',
-      amenities: ['Water 24/7', 'Electricity'],
-      rating: 4.5,
-      trustScore: 82,
-      reviews: 19,
-    },
-    {
-      id: 6,
-      name: 'Juja Prime Apartments',
-      image: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=500&h=300&fit=crop',
-      price: 18000,
-      area: 'Juja',
-      universityNearby: 'JKUAT',
-      distanceToCampus: 0.9,
-      isShared: false,
-      category: '1 Bedroom',
-      amenities: ['WiFi', 'Gym', 'Parking'],
-      rating: 4.8,
-      trustScore: 90,
-      reviews: 37,
-    },
-  ];
+  const allProperties = useMemo(
+    () =>
+      properties
+        .filter((property) => property.status !== 'Rejected')
+        .map((property) => ({
+          id: property.id || property._id,
+          name: property.name,
+          image:
+            property.image ||
+            'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=800&q=80',
+          price: Number(property.rent || 0),
+          area: property.location,
+          universityNearby: property.universityNearby || 'Nearby University',
+          distanceToCampus: Number(property.distanceToCampus || 1.5),
+          isShared: Boolean(property.isShared),
+          category: property.category || property.type || 'Hostel',
+          amenities: property.amenities || [],
+          trustScore: property.trustScore || 90
+        })),
+    [properties]
+  );
 
   const areas = ['Ongata Rongai', 'Juja', 'Kasarani', 'Madaraka', 'Nairobi Central'];
   const universities = ['Multimedia University', 'JKUAT', 'USIU-Africa', 'Strathmore University', 'KCA University', 'CUEA'];
@@ -160,7 +93,7 @@ export default function PropertiesPage() {
             Find Student Housing
           </h1>
           <p className="text-lg text-gray-600 font-medium">
-            {filteredProperties.length} verified hostels available near major campuses
+            {filteredProperties.length} listings available near major campuses
           </p>
         </div>
       </div>

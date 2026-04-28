@@ -6,8 +6,11 @@ import { Link } from 'react-router-dom';
 export default function FeaturedProperties() {
   const { properties } = useProperties();
 
-  // Show only verified properties on the landing page
-  const featured = properties.filter(p => p.status === 'Verified').slice(0, 4);
+  // Show active and pending listings on the landing page
+  const featured = properties
+    .filter((p) => p.status !== 'Rejected')
+    .sort((a, b) => new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime())
+    .slice(0, 4);
 
   const amenityIcons = {
     'WiFi': <Wifi size={14} />,

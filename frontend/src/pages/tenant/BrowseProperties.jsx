@@ -23,8 +23,10 @@ const BrowseProperties = () => {
     });
     const [showNewOnly, setShowNewOnly] = useState(false);
 
-    // Only show verified properties to tenants
-    const verifiedProperties = properties.filter(p => p.status === 'Verified');
+    // Show active and pending listings to tenants
+    const verifiedProperties = properties.filter(
+        (p) => p.status === 'Verified' || p.status === 'Pending'
+    );
 
     const isPropertyNew = (property) => {
         const createdAt = property.created_at || property.createdAt;
