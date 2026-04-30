@@ -4,11 +4,15 @@ import { AuthProvider } from './context/AuthContext';
 import { PropertyProvider } from './context/PropertyContext';
 import { ApplicationProvider } from './context/ApplicationContext';
 import { VisitProvider } from './context/VisitContext';
+import ProtectedRoute from './components/ProtectedRoute';
 import DashboardLayout from './layouts/DashboardLayout';
 
 // Auth Pages
 import Login from './pages/auth/Login';
 import Signup from './pages/auth/Signup';
+
+import TenantLogin from './pages/auth/TenantLogin';
+import LandlordLogin from './pages/auth/LandlordLogin';
 
 // Public Pages
 import LandingPage from './pages/LandingPage';
@@ -54,11 +58,17 @@ function App() {
                 <Route path="/contact" element={<ContactPage />} />
                 <Route path="/how-it-works" element={<HowItWorksPage />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/tenant/login" element={<TenantLogin />} />
+                <Route path="/landlord/login" element={<LandlordLogin />} />
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/get-started" element={<Signup />} />
 
                 {/* Tenant Routes */}
-                <Route element={<DashboardLayout />}>
+                <Route element={
+                  <ProtectedRoute allowedRoles={['tenant']}>
+                    <DashboardLayout />
+                  </ProtectedRoute>
+                }>
                   <Route path="/tenant/dashboard" element={<TenantDashboard />} />
                   <Route path="/tenant/browse" element={<BrowseProperties />} />
                   <Route path="/tenant/applications" element={<TenantApplications />} />
@@ -69,7 +79,11 @@ function App() {
                 </Route>
 
                 {/* Landlord Routes */}
-                <Route element={<DashboardLayout />}>
+                <Route element={
+                  <ProtectedRoute allowedRoles={['landlord']}>
+                    <DashboardLayout />
+                  </ProtectedRoute>
+                }>
                   <Route path="/landlord/dashboard" element={<LandlordDashboard />} />
                   <Route path="/landlord/properties" element={<LandlordProperties />} />
                   <Route path="/landlord/add-property" element={<AddProperty />} />
@@ -78,7 +92,11 @@ function App() {
                 </Route>
 
                 {/* Admin Routes */}
-                <Route element={<DashboardLayout />}>
+                <Route element={
+                  <ProtectedRoute allowedRoles={['admin']}>
+                    <DashboardLayout />
+                  </ProtectedRoute>
+                }>
                   <Route path="/admin/dashboard" element={<AdminDashboard />} />
                   <Route path="/admin/landlords" element={<ManageLandlords />} />
                   <Route path="/admin/tenants" element={<VerifyTenants />} />

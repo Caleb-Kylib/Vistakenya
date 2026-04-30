@@ -1,12 +1,20 @@
 import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Menu, X, LogOut, User } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 
 export default function GlassNavbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, logout } = useAuth();
 
   const isActive = (path) => location.pathname === path;
+
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
 
   const navLinks = [
     { name: 'Home', path: '/' },
@@ -15,6 +23,11 @@ export default function GlassNavbar() {
     { name: 'About Us', path: '/about' },
     { name: 'Contact', path: '/contact' },
   ];
+
+  const getDashboardPath = () => {
+    if (!user) return '/login';
+    return `/${user.role}/dashboard`;
+  };
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50">
@@ -49,18 +62,39 @@ export default function GlassNavbar() {
 
               {/* Right Side Buttons */}
               <div className="hidden md:flex items-center space-x-3">
-                <Link
-                  to="/tenant/dashboard"
-                  className="px-3 py-2 text-sm font-medium text-gray-700 hover:text-teal-700 transition-colors duration-300"
-                >
-                  Sign In
-                </Link>
-                <Link
-                  to="/get-started"
-                  className="px-5 py-2 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 transition-all duration-300 shadow-lg hover:shadow-xl"
-                >
-                  Get Started
-                </Link>
+                {user ? (
+                  <>
+                    <Link
+                      to={getDashboardPath()}
+                      className="px-4 py-2 flex items-center gap-2 rounded-lg text-sm font-medium text-teal-700 bg-teal-50 hover:bg-teal-100 transition-all duration-300"
+                    >
+                      <User size={16} />
+                      Dashboard
+                    </Link>
+                    <button
+                      onClick={handleLogout}
+                      className="px-3 py-2 text-sm font-medium text-gray-500 hover:text-red-600 transition-colors duration-300 flex items-center gap-1"
+                    >
+                      <LogOut size={16} />
+                      Logout
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <Link
+                      to="/login"
+                      className="px-3 py-2 text-sm font-medium text-gray-700 hover:text-teal-700 transition-colors duration-300"
+                    >
+                      Sign In
+                    </Link>
+                    <Link
+                      to="/signup"
+                      className="px-5 py-2 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 transition-all duration-300 shadow-lg hover:shadow-xl"
+                    >
+                      Get Started
+                    </Link>
+                  </>
+                )}
               </div>
 
               {/* Mobile Menu Button */}
@@ -90,21 +124,41 @@ export default function GlassNavbar() {
                       {link.name}
                     </Link>
                   ))}
-                  <div className="pt-2 space-y-2">
-                    <Link
-                      to="/tenant/dashboard"
-                      onClick={() => setMobileOpen(false)}
-                      className="block px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-teal-500/10 transition-colors"
-                    >
-                      Sign In
-                    </Link>
-                    <Link
-                      to="/get-started"
-                      onClick={() => setMobileOpen(false)}
-                      className="block px-4 py-2 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 transition-all text-center"
-                    >
-                      Get Started
-                    </Link>
+                  <div className="pt-2 space-y-2 border-t border-slate-100 mt-2">
+                    {user ? (
+                      <>
+                        <Link
+                          to={getDashboardPath()}
+                          onClick={() => setMobileOpen(false)}
+                          className="block px-4 py-2 rounded-lg text-sm font-medium text-teal-700 bg-teal-50"
+                        >
+                          Dashboard
+                        </Link>
+                        <button
+                          onClick={() => { handleLogout(); setMobileOpen(false); }}
+                          className="w-full text-left px-4 py-2 rounded-lg text-sm font-medium text-red-600 hover:bg-red-50"
+                        >
+                          Logout
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <Link
+                          to="/login"
+                          onClick={() => setMobileOpen(false)}
+                          className="block px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-teal-500/10 transition-colors"
+                        >
+                          Sign In
+                        </Link>
+                        <Link
+                          to="/signup"
+                          onClick={() => setMobileOpen(false)}
+                          className="block px-4 py-2 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 transition-all text-center"
+                        >
+                          Get Started
+                        </Link>
+                      </>
+                    )}
                   </div>
                 </div>
               </div>
