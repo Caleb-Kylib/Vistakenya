@@ -38,3 +38,5 @@ Thumbs.db
 backend/data/*.json
 !backend/data/seed.json
 .env
+nodemon
+setup_images.js

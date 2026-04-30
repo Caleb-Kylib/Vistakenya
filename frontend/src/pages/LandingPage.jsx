@@ -9,6 +9,7 @@ import WhyChooseUs from '../components/WhyChooseUs';
 import HowItWorksSection from '../components/HowItWorksSection';
 import Testimonials from '../components/Testimonials';
 import USSDSimulator from '../components/USSDSimulator';
+import apartmentsImg from '../assets/apartments.jpg';
 
 export default function LandingPage() {
   const [searchArea, setSearchArea] = React.useState('');
@@ -23,7 +24,7 @@ export default function LandingPage() {
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <img 
-            src="/hero-bg.png" 
+            src={apartmentsImg} 
             alt="Student Home" 
             className="w-full h-full object-cover"
           />
