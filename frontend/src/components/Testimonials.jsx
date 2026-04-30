@@ -89,6 +89,10 @@ export default function Testimonials() {
                     src={currentTestimonial.image}
                     alt={currentTestimonial.name}
                     className="w-16 h-16 rounded-full object-cover border-3 border-teal-500"
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(currentTestimonial.name) + '&background=0D9488&color=fff';
+                    }}
                   />
                   <div className="absolute -bottom-1 -right-1 bg-teal-500 text-white rounded-full p-1">
                     ✓

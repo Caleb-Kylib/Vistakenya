@@ -279,6 +279,10 @@ export default function PropertiesPage() {
                         src={property.image}
                         alt={property.name}
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = '/compound.jpg';
+                        }}
                       />
                       <div className="absolute top-3 left-3 flex flex-col gap-2">
                         {property.isShared && (

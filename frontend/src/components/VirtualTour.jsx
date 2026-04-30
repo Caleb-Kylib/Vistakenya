@@ -7,7 +7,7 @@ const tours = [
         title: "The Penthouse Experience",
         location: "Westlands, Nairobi",
         price: "KES 150,000/mo",
-        image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&q=80",
+        image: "/compound5.jpg",
         video: "https://assets.mixkit.co/videos/preview/mixkit-modern-apartment-with-large-windows-and-city-view-4144-large.mp4",
         description: "Experience 360-degree views of the city skyline in this premium 3-bedroom penthouse."
     },
@@ -16,7 +16,7 @@ const tours = [
         title: "Modern Minimalist Studio",
         location: "Kilimani, Nairobi",
         price: "KES 45,000/mo",
-        image: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&q=80",
+        image: "/compound6.jpg",
         video: "https://assets.mixkit.co/videos/preview/mixkit-interior-of-a-modern-living-room-4143-large.mp4",
         description: "Smart living at its best. This studio features integrated home automation and sleek finishes."
     },
@@ -25,7 +25,7 @@ const tours = [
         title: "Eco-Friendly Family Villa",
         location: "Karen, Nairobi",
         price: "KES 280,000/mo",
-        image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80",
+        image: "/compound7.jpg",
         video: "https://assets.mixkit.co/videos/preview/mixkit-modern-kitchen-with-wooden-cabinets-and-white-countertops-4145-large.mp4",
         description: "A spacious 5-bedroom villa powered by solar energy, featuring a private organic garden."
     }
@@ -67,6 +67,10 @@ export default function VirtualTour() {
                                     src={tour.image}
                                     alt={tour.title}
                                     className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                                    onError={(e) => {
+                                        e.target.onerror = null;
+                                        e.target.src = '/compound.jpg';
+                                    }}
                                 />
                                 <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors duration-500 flex items-center justify-center">
                                     <button

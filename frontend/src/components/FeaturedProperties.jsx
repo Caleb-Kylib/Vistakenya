@@ -50,9 +50,13 @@ export default function FeaturedProperties() {
               {/* Image Container */}
               <div className="relative h-64 overflow-hidden bg-gray-50">
                 <img
-                  src={property.image}
+                  src={property.image || '/compound.jpg'}
                   alt={property.name}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = '/compound.jpg';
+                  }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent group-hover:from-black/40 transition-all"></div>
 
