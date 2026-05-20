@@ -268,13 +268,17 @@ export default function ContactPage() {
       <section className="px-6 py-16 bg-white">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">Visit Our Office</h2>
-          <div className="rounded-3xl overflow-hidden shadow-lg border border-gray-200 h-96 bg-gray-200 flex items-center justify-center">
-            {/* Placeholder for map */}
-            <div className="text-center">
-              <MapPin size={48} className="text-gray-400 mx-auto mb-4" />
-              <p className="text-gray-500 text-lg">Map would be embedded here</p>
-              <p className="text-gray-400">Nairobi, Kenya</p>
-            </div>
+          <div className="rounded-3xl overflow-hidden shadow-lg border border-gray-200 h-96 bg-gray-200 w-full">
+            <iframe
+              src="https://www.google.com/maps?q=Nation+Center+Nairobi,+Kenya&output=embed"
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              allowFullScreen=""
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title="Nation Center Nairobi Map"
+            ></iframe>
           </div>
         </div>
       </section>
